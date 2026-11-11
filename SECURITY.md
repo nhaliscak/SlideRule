@@ -29,4 +29,4 @@ SlideRule evaluates mathematical text, so these are the areas that matter:
 * A calculation that is slow or uses a lot of memory. The time limit (Settings) is a convenience, not a security boundary.
 * A wrong numerical result. That is a bug, not a vulnerability: please use the "Wrong result" issue form.
 * Problems in dependencies (SymPy, NumPy, SciPy, FastAPI, Pyodide, KaTeX): report those upstream, and tell us if SlideRule needs a version bump.
-* The hosted static website loads Pyodide from a public CDN (`cdn.jsdelivr.net`); the CDN's own security is outside this project.
+* A self-hosted static copy of the website (`scripts/build_web.py`) loads Pyodide from a public CDN (`cdn.jsdelivr.net`); the CDN's own security is outside this project.
