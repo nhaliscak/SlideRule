@@ -1,136 +1,235 @@
 # SlideRule
 
-Engineering calculations that **show their work**: unit-aware, filterable, with a symbolic derivation and a numeric
-solution (units and conversions at every step) for each result. Deterministic code only — no LLMs or SLMs anywhere.
+Engineering calculations that **show their work**. Choose one of 1,377 calculations across 36 disciplines, enter values with units, and get the answer
+together with a worked solution: the symbolic derivation, the numbers substituted, and every unit conversion. Solve for *any* variable, not only the
+one the formula is written for. Deterministic code only: no LLMs or SLMs anywhere.
 
-> **Work in progress.** SlideRule is under active development. Of the 385 calculations added in the latest equation-audit fill, about 225 formulas and constants have been checked against published sources (two formula errors were found and fixed; see [docs/VERIFICATION.md](docs/VERIFICATION.md)), a short list that the web could not settle is waiting for a textbook check ([docs/ROADMAP.md](docs/ROADMAP.md)), and the roughly 990 earlier calculations have not been through these checks, so verify any result you rely on. If you find a bug, a wrong result or anything confusing, please [open an issue](https://github.com/nhaliscak/SlideRule/issues) with the calculation, the inputs you used and what you expected.
-
-* 1377 calculations across 36 disciplines (civil, electrical, mechanical, chemical, petroleum, aerospace, environmental, architectural, industrial, systems, agricultural, biomedical, computer/software, materials, mining, nuclear, plus **physics** and **chemistry** as sciences (about 200 physics and 150 chemistry calculations: mechanics, analytical mechanics, fluids, thermodynamics, waves, optics, electromagnetism, quantum and statistical mechanics, atomic, nuclear, solid-state, plasma and particle physics, astrophysics and cosmology; general, physical, quantum, analytical, inorganic, organic, polymer, colloid, bio- and atmospheric chemistry, thermodynamics, kinetics, electrochemistry, spectroscopy: the textbook equations, each with a worked example and an independent hand-calculation test, and the classical engineering ones cross-listed under them), plus emerging fields such as quantum, AI/ML, robotics, energy, synthetic biology). Every discipline and sub-discipline in `docs/reference/disciplines.txt` has at least one calculation: see [docs/COVERAGE.md](docs/COVERAGE.md)
-* Dimensional analysis and unit standardization: wrong-dimension inputs are rejected, mixed unit systems are flagged, every equation is dimension-checked when loaded
-* Solve for *any* quantity: tick "find" on a different variable and the equations are rearranged symbolically
-* Filter by name, discipline, sub-discipline, the variables a calculation contains, or what it can solve for
-* **LiveCalc**: a unit-aware scratchpad calculator. Type `5 m + 30 cm`, `120 km/h to m/s`, `m = 5 kg` then `F = m*a`, `f(x) = 3*x^2 - 2`, or `plot sin(x), cos(x) from 0 to 2*pi`; everything is evaluated as you type and shown as Markdown with maths, with a toggle for the worked steps (expression, values substituted, conversion to SI, result). A `calc(...)` library call is opened up into that calculation's own working (formulas, inputs in SI, each formula with the numbers put in, unit reduction), your own functions show their definition and body with the values in, and `integrate`, `derivative`, `findroot` and `sumover` show their method and numbers (plus the exact antiderivative or derivative, checked against the numeric answer, for plain unitless formulas). The last 30 entries are kept and variables carry from one to the next. Select a typed equation and send it to **My equations** with units already filled in from your variables. See [docs/LIVECALC.md](docs/LIVECALC.md)
-* **Solving a calculation, quality of life**: *Sweep one input* (under the inputs) graphs a result as one input varies (2–200 points, linear or logarithmic spacing, CSV download; `POST /api/calculations/{id}/sweep`, `api.sweep`); the unit you pick for a kind of quantity is remembered and the worked example is converted to it the next time; *Copy as text*, *Save case* and *Open case* (a small JSON file with inputs, unknowns and results) join *Copy link*; the filter boxes are now "I have" and "I need to find", with one-click quantity chips that only offer what the other filters leave.
-* **System builder editing aids**: undo and redo (↶ ↷, Ctrl+Z, Ctrl+Shift+Z or Ctrl+Y; 100 steps, a burst of typing in a value box is one step), **Tidy** (arranges the blocks in columns by what feeds what), alignment guides while dragging a block (left edges, tops and bottoms line up with neighbours; hold Alt to drag freely), and **Suggested connections** (outputs and unwired inputs of the same physical type, shown for the selected block or the whole system, one click to wire).
-* **Trust and polish**: references that were not checked against a source carry a visible "not verified" note on the calculation (the list is `src/sliderule/library/reference_status.py`; a test keeps it tied to the library), the About page says plainly what the checks do and do not cover, the bundled page and scripts are always revalidated so an update never shows stale code, form-control borders and the accent colour meet WCAG contrast (3:1 for controls, 4.5:1 for text) in both themes, the section tabs follow the arrow-key pattern, there is a skip link, and the star and the group arrows are no longer buttons inside a button.
-* **LiveCalc additions**: `qr_q qr_r lu_p lu_l lu_u chol` (matrix factors, with units), 3-D lists (`T3[layer, row, column]`, `shape`, and `det trace inv eigvals rank cond transpose` layer by layer), `plot argand` and `plot nyquist` (critical point, gain and phase margins), **Pin** a graph above the history, and **Python** and **Notebook** export of a session (see [docs/LIVECALC.md](docs/LIVECALC.md)).
-* **More editing aids**: *Also vary* in the sweep panel draws one curve for each of up to six values of a second input; on the System canvas Shift-click chooses several blocks (Ctrl+A all), they move, copy (Ctrl+C), paste (Ctrl+V, wires between them included) and delete together.
-* **Wires snap**: dragging a wire on the System canvas connects to the nearest compatible port within 28 px, you need not land on it; port and plot colours now meet 3:1 contrast in both themes.
-* **What is missing**: [docs/EQUATION_AUDIT.md](docs/EQUATION_AUDIT.md) lists, field by field, the standard equations the library does not have yet (548 checked topics: 81 covered, 112 partly, 355 missing) and a suggested first batch; [docs/ROADMAP.md](docs/ROADMAP.md) lists what is noted for later. `python scripts/equation_audit.py` reruns the check.
-* **Levels, favorites and groups** (the *Show* switch above the search in the Calculations tab): **Basic** lists the equations of classical mechanics (kinematics, forces, energy, momentum, rotation, oscillations, collisions, statics) and college-level chemistry (general, analytical, kinetics, thermodynamics, electrochemistry, atomic structure, organic), **Advanced** (the default) lists everything, **Favorites** is a shortlist you build by pressing ☆ on a calculation, and **Custom** shows your own groups: make a group with *New*, add calculations to it from the *Groups* menu beside a calculation's title, choose one group or all of them. The search, discipline and variable filters apply inside every level; favorites and groups are kept in this browser and, with the installed app, also in `lists.json` next to your equations (`~/.sliderule`), so another browser or computer that uses the same folder sees them: the newer copy wins as a whole, so a deletion is not undone (they can include your own equations). **Recent** lists what you opened lately. *Export* and *Import* (under Favorites and Custom) save favorites, groups, recent calculations and your own Basic choice to a file and merge such a file back in. With one group chosen, ▲ ▼ on a card set its order; *Change what Basic includes* lets you pick which sub-disciplines Basic means. Filters survive a reload, and the keys `/` (search), ↑ ↓ (move), Enter (open) and `f` (favorite) work in the list. `sliderule list --level basic` does the same on the command line.
-* **System Design** (the *System* mode of the Calculations tab, sharing its search and filters; the canvas keeps its blocks when you switch back to a single calculation, until you press Clear): a canvas where equation blocks are clicked or dragged in and wired together. Each variable is an input, output or constant; wires only join ports of the same physical type; the whole system evaluates in dependency order with units converted on every wire. The whole system of equations can be exported as LaTeX (a compilable `.tex`), Markdown (`$…$` math) a printable, fully offline HTML page (KaTeX and its fonts are embedded; print-ready CSS) a MATLAB / Octave script, an Excel workbook whose cells hold the live formulas (editable inputs, named cells, a check column), or a standalone SymPy script that re-computes the system (numerically solved blocks are solved again with SciPy: initial-value problems with events, delay equations, boundary-value problems and partial differential equations) and checks itself against SlideRule's results, symbolic and/or numeric, including the closed-form output expressions composed across wires
-* Equations can contain **derivatives and definite integrals** (`diff`, `integrate`); they are unit-checked as written, evaluated symbolically and can still be solved for any variable
-* **Differential equations** (initial-value problems, first order up to systems and higher orders) are solved in closed form when SymPy can, so any variable can still be solved for, and numerically otherwise, with a plot of the solution and a table at chosen times; integrals without a closed form are integrated numerically
-* **Partial differential equations** in one space dimension and time (diffusion/heat, waves with damping, advection–diffusion; value, slope and Robin conditions) by the method of lines, with an error estimate from grid refinement, profile and history plots
-* **Conservation laws with shocks**: advection, Burgers, traffic flow, shallow-water dam breaks and other equations in conservation form by a limited finite-volume scheme
-* **Coupled fields and 2-D transients**: several PDEs solved together (reaction-diffusion), time-dependent problems on a rectangle (including axisymmetric r–z cylinders, three-dimensional blocks, steady or transient, and L-shaped regions with rectangular cutouts), mixed derivatives, periodic domains, point sources and moving (Stefan) boundaries, by a vectorised method of lines with SciPy BDF and a sparse Jacobian
-* **Steady 2-D problems** on rectangles (Laplace, Poisson, conduction with generation and convection, nonlinear variants) solved on a grid with Newton's method and shown as a colour map
-* **Series**: `summation(term, (n, 1, 50))` for the textbook Fourier-series solutions of the heat, wave and Laplace equations (slab conduction, plucked string, plate temperature, square-wave harmonics), evaluated term by term, or to convergence for an infinite series (`(n, 1, oo)`: accelerated, cross-checked, and refused when it cannot be trusted); anything inside the series can be solved for by root-finding
-* **Stochastic differential equations**: white-noise terms and Monte Carlo statistics (mean, spread, exceedance probability, quantiles) with a fixed seed and reported sampling error
-* **Fractional derivatives**: `fdiff(y, t, 0.6)` (Caputo, orders up to 3 with the matching initial values) for viscoelastic creep, anomalous relaxation, fractional oscillators and other memory effects, by a predictor-corrector over the whole history
-* **Delays and free boundaries**: `delay(y, tau)` for delay differential equations (method of steps with interpolated history) and boundary-value problems whose interval length is itself unknown
-* **Hybrid systems and constraints**: events can make the state jump (bounces, relay thermostats, switching) and algebraic constraints are eliminated from the differential equations; larger systems (24 states, 6th order)
-* **Boundary-value problems** (beams, fins, channel profiles: conditions at the ends of an interval, including slope and Robin conditions) are solved in closed form when possible and by multiple shooting otherwise; the plot covers the whole interval
-* **Simultaneous equations**: coupled algebraic equations (linear: exact; nonlinear: Newton with an exact Jacobian and several starting points, reporting any second solution) such as Colebrook for the velocity of a given head loss, node voltages or a pipe junction
-* **Cylindrical and spherical coordinates**: radial conduction, pipe flow, polytropes and axisymmetric problems with the axis or centre singularity (`u_x/r`) handled exactly, in closed form where SymPy can
-* **Special functions**: Bessel (J, Y, I, K), Airy, Legendre, elliptic integrals, Lambert W, Bessel zeros and the Heisler eigenvalues, so the textbook Fourier–Bessel solutions and closed forms (annular fins, drums, pendulums) work, in every engine
-* **Complex numbers** (phasors, impedance, complex power): `j` is the imaginary unit; a complex equation is split into real and imaginary parts and solved together, for magnitudes and angles in either direction
-* **Gauge pressure and logarithmic levels**: `psig`, `barg`, `kPag` are offset units (absolute minus 1 atm) and dB levels follow the written definition with exact rearrangement of `log10`
-* **Your own functions and products**: define a formula once (`fsj(Re, rel)`) and call it from several equations; `product(term, (i, 1, 6))` for loops that multiply
-* **Data tables**: measured or published points (pump curves, steam tables, S-N data) become differentiable functions with linear, monotone-cubic or log-log interpolation; an unknown inside a table is found numerically
-* **Vectors and matrices**: variables with a `shape` expand into components; `dot`, `cross`, `norm`, `det`, `inv`, matrix products and vector equations (`K*u = f`, `M = cross(r, F)`) are solved component by component, in either direction
-* **Numerical inversion**: whatever cannot be rearranged (numerical ODE results, event times, integrals without closed forms, implicit equations like Colebrook) is found by bracketed root-finding, with an optional search range
-* A **time limit for long calculations** (10 s by default, adjustable, or switched off after an explicit warning) in ⚙ Settings or `sliderule settings`, so a runaway symbolic problem cannot freeze the app
-* **Property data (early)**: versioned *datapacks* hold material and fluid properties with the source, basis (minimum, typical, design, computed) and, where known, the spread or measured deviation for every number; bad data is refused when a pack loads. Properties can be single values or temperature curves that refuse to extrapolate. Four packs ship, all **not for design**: three typical materials (structural steel, aluminium 6061-T6, Ti-6Al-4V; sourced from 1972 NASA handbooks, NIST and National Bureau of Standards reports and a state manual), cryogenic conductivity and specific heat of 23 materials from NIST (with NIST's acknowledgement), water and dry air against temperature computed from published correlations, and about 30 common fluids (gases, hydrocarbons, solvents, refrigerants; liquid and gas, density, viscosity, conductivity, specific heat) computed with CoolProp. An importer for a source that cannot be redistributed (the CRC Handbook) builds a private pack on your own machine. In a calculation, an input whose quantity matches (density, viscosity, modulus, conductivity ...) shows **from data…**: pick the material or fluid (and a temperature), see the value with its basis, source and uncertainty, and use it; the source stays beside the number and is copied with the case. They are also reachable through `sliderule data list | show | value | validate` and the `/api/data` endpoints — see [docs/DATA_AND_STANDARDS_STRATEGY.md](docs/DATA_AND_STANDARDS_STRATEGY.md) §10 to §12
-* **My equations**: define your own calculations (variables with units, equations; dimension-checked when saved) in the browser or with `sliderule custom`, solve and wire them like any other, and share them as plain JSON files — see [docs/CUSTOM_EQUATIONS.md](docs/CUSTOM_EQUATIONS.md)
-* Two ways to run, one Python engine: a local install, and a static website that runs the same Python in the browser (Pyodide)
-
-## Run it
-
-**Local install**
-
-```bash
-# needs Python 3.12 or newer
-pip install ".[server]"          # from a clone; use ".[desktop]" instead for the native window
-sliderule serve                  # opens http://127.0.0.1:8765
-sliderule serve --reload         # development: restarts on Python edits (HTML/JS/CSS edits show on a page refresh)
-sliderule app                    # native window around the same app (needs the [desktop] extra)
-```
-
-The native window (`sliderule app`) is the same interface in a desktop window (pywebview), served by a private local server on a free port; Export, Save case and CSV buttons open a save dialog. It was tried on Linux with the Qt backend (the `desktop` extra installs it there); on Windows it uses WebView2 and on macOS the system WebKit, which are not tested yet. If no toolkit is found it says what to install and points to `sliderule serve`.
-
-**Use SlideRule from other programs.** `sliderule app --api` also starts the API on a known port (default 8765, `--api-port`), for scripts, spreadsheets, MATLAB or a local web app to call while the window is open (it stops when the window closes; `sliderule serve --no-browser` runs a server without a window, with the same Host and Origin protection but no token). Every function is reachable through one endpoint, `POST /api/rpc` with `{"method": ..., "params": ...}`; the other routes and their schemas are at `/api/docs`.
-
-```bash
-sliderule app --api --api-token "$(openssl rand -hex 16)"      # choose a token and keep it; the app never prints it
-curl -X POST http://127.0.0.1:8765/api/rpc -H "Authorization: Bearer <token>" -H "Content-Type: application/json" \
-     -d '{"method": "solve", "params": {"calc_id": "civil.column.euler_buckling", "inputs": {"E": "200 GPa", "I": "8.0e-6 m^4", "L": "3 m", "K": "1"}, "solve_for": ["Pcr"]}}'
-```
-
-The API server answers only on 127.0.0.1, only to the host names `localhost`, `127.0.0.1` and `[::1]` (so a web page cannot reach it by DNS rebinding), and refuses requests that a web page on another site makes (an `Origin` header) unless you list that origin with `--api-origin http://localhost:3000`. `--api-token` (or `$SLIDERULE_API_TOKEN`) requires a bearer token on every request except the API description; without one any program on the computer can use it, and the app says so when it starts. It serves only the API, never the web page, and it is not meant for a network: there is no encryption or user accounts. The API can write your equation and list files, so treat the token like a password.
-
-`sliderule serve` has the same Host and Origin protection (no token, because the web page itself would have to send it): a web page on another site cannot make your browser drive the local server. `sliderule serve --host 0.0.0.0` makes it reachable from other computers, and then warns: there is no login or encryption, so use it only on a network you trust.
-
-CLI use without the UI:
-
-```bash
-sliderule list -d petroleum -v viscosity
-sliderule list -s hydraulic           # by sub-discipline
-sliderule data list                   # property datapacks; `data show PACK RECORD` prints one record with its sources
-sliderule data value fluids-water-air water-liquid dynamic_viscosity --at 20 --at-unit degC --unit "mPa*s"
-sliderule show civil.beam.simply_supported_udl
-sliderule solve mechanical.thermo.ideal_gas_law P="1 atm" n="1 mol" T="0 degC" --unit V=L --steps numeric
-sliderule convert 10 ppg kg/m^3
-```
-
-The JSON API is documented at `/api/docs` while the server runs.
-
-**Browser version** (no server, no install)
-
-```bash
-python scripts/build_web.py      # writes ./site (static files)
-python -m http.server -d site    # or deploy ./site anywhere; a GitHub Pages workflow is included
-```
-
-First load downloads Python + SymPy from the Pyodide CDN (`cdn.jsdelivr.net`, version pinned in `web/js/pyodide-worker.js`; then cached), so the static website needs a network connection the first time. The local install (`sliderule serve`) does not use the CDN for calculations. Calculations run in a Web Worker.
-
-## Using it
-
-**1. Find a calculation.** In the *Calculations* tab, type in the search box or narrow the list by discipline, sub-discipline, the variables it contains, or what it can solve for. The *Show* switch (Basic, Advanced, Custom, Favorites, Recent) limits the list; *Hide calculation list* gives the detail pane more room. Click a calculation to open it.
-
-**2. Enter values and read the working.** Fill in the inputs with a unit each (any unit of the right dimension; a wrong dimension is rejected and mixed unit systems are flagged). The results appear at the top in the units you choose, followed by the **worked solution**: the substituted values, every unit conversion and each step, with a symbolic version beside the numeric one. To solve for a different quantity, tick *find* next to it and the equations are rearranged.
+[![CI](https://github.com/nhaliscak/SlideRule/actions/workflows/ci.yml/badge.svg)](https://github.com/nhaliscak/SlideRule/actions/workflows/ci.yml)
+MIT licence · Python 3.12+ ·
+[Live demo](https://nhaliscak.github.io/SlideRule/) · [Examples](examples/) · [Documentation](#documentation) · [Changelog](CHANGELOG.md) · [Support the project](#support)
 
 ![A solved calculation (moist air): results in chosen units, then the numeric worked solution](docs/images/calculation.jpg)
 
-**3. Join calculations into a system.** Switch the Calculations tab from *Single calculation* to *System*. Click or drag calculations from the list onto the canvas (or start from the *Start from an example* buttons or the *Examples…* menu), then drag from an output port to an input port of the same physical type, as in the example below where the density from an ISA atmosphere feeds a lift and drag calculation. *Evaluate system* solves the whole chain, and *Export* writes it out as LaTeX, Python or other formats.
+> **Pre-1.0 and under active development.** About 225 of the most recently added formulas have been checked against published sources (two errors were found and fixed;
+> see [docs/VERIFICATION.md](docs/VERIFICATION.md)); the roughly 990 earlier calculations have not been through those checks, so verify any result you rely on.
+> Found a wrong result, a bug or something confusing? Please [open an issue](https://github.com/nhaliscak/SlideRule/issues) with the calculation, your inputs and what you expected.
+
+## Quick start
+
+**In the browser, nothing to install:** open the [live demo](https://nhaliscak.github.io/SlideRule/). It runs the same Python engine in your browser (the first load downloads the
+Python runtime, then it is cached).
+
+**On your computer** (Python 3.12 or newer):
+
+```bash
+git clone https://github.com/nhaliscak/SlideRule && cd SlideRule
+pip install ".[server]"        # use ".[desktop]" instead if you want the native window
+sliderule serve                # opens http://127.0.0.1:8765
+```
+
+## What it does
+
+* **Worked solutions.** Every result comes with the formula, the substituted values with units, each conversion and the unit reduction, in symbolic and numeric form.
+* **Solve for anything.** Mark a different variable as the unknown and the equations are rearranged symbolically; what cannot be rearranged is found by bracketed root-finding.
+* **Units checked everywhere.** A wrong dimension is rejected, mixed unit systems are flagged, and every equation is dimension-checked when it is loaded.
+* **LiveCalc.** A unit-aware scratchpad: `5 m + 30 cm`, `120 km/h to m/s`, `f(x) = 3*x^2 - 2`, `plot sin(x) from 0 to 20`, with the working shown on request.
+* **System Design.** Wire calculations together on a canvas, output port to input port of the same physical type, and evaluate the whole chain; export it to LaTeX, Python, Excel, MATLAB and more.
+* **Beyond algebra.** Derivatives and integrals, ordinary and partial differential equations, boundary-value problems, series, stochastic and fractional equations, complex numbers, vectors and matrices.
+* **Your own equations.** Define calculations with units in the browser or as plain JSON files and use them like the built-in ones.
+* **Property data with sources.** Materials and fluids with the basis (minimum, typical, design, computed), the source and the uncertainty of every number, offered next to an input as **from data…**.
+* **Runs where you are.** In the browser, as a local server, in a native window, from the command line, from Python, and over HTTP for other programs.
+
+The complete feature list is in [docs/FEATURES.md](docs/FEATURES.md).
+
+## Examples
+
+Everything below was run; the output is real. The files are in [`examples/`](examples/).
+
+### From the command line
+
+```bash
+sliderule solve civil.column.euler_buckling E="200 GPa" I="8.0e-6 m^4" L="3 m" K=1 --for Pcr --unit Pcr=kN
+```
+```
+Pcr = 1754.6 kN   (Critical buckling load)
+```
+
+Add `--steps numeric` for the worked solution (it is printed as LaTeX; the app typesets it):
+
+```
+## Calculate Critical buckling load — Euler critical load
+  P_{cr} = \frac{\pi^{2} E I}{K^{2} L^{2}}    % formula
+  P_{cr} = \frac{\pi^{2} \cdot \left(2\times10^{11}\,\mathrm{Pa}\right) \cdot \left(8\times10^{-6}\,\mathrm{m}^{4}\right)}{\left(1\right)^{2} \cdot \left(3\,\mathrm{m}\right)^{2}}    % substitute SI values with units
+  \left[P_{cr}\right] = \mathrm{Pa} \cdot \mathrm{m}^{2} = \frac{\mathrm{kg} \cdot \mathrm{m}}{\mathrm{s}^{2}} = \mathrm{N}    % unit reduction
+  P_{cr} = 1.7546\times10^{6}\,\mathrm{N}    % result in SI
+```
+
+Solve the other way: which second moment of area carries 2000 kN on the same column?
+
+```bash
+sliderule solve civil.column.euler_buckling Pcr="2000 kN" E="200 GPa" L="3 m" K=1 --for I --unit I=mm^4
+```
+```
+I = 9.1189e6 mm^4   (Second moment of area (weak axis))
+```
+
+Find calculations with `sliderule list` (`sliderule list buckling -d civil`, `sliderule list -d petroleum -v viscosity`), read one with `sliderule show ID`, convert units with
+`sliderule convert 120 km/h m/s`. More in [`examples/01_command_line.sh`](examples/01_command_line.sh).
+
+### From Python
+
+```python
+from sliderule import api
+
+r = api.solve("civil.column.euler_buckling",
+              {"E": "200 GPa", "I": "8.0e-6 m^4", "L": "3 m", "K": "1"},
+              solve_for=["Pcr"], output_units={"Pcr": "kN"})
+print(r["outputs"][0]["value"], r["outputs"][0]["unit"])      # 1754.59... kN
+# r["steps"]["symbolic"] and r["steps"]["numeric"] hold the worked solution as data
+
+# the same column, sweeping the length (the swept input is given as {"value", "unit"})
+s = api.sweep("civil.column.euler_buckling", {"E": "200 GPa", "I": "8.0e-6 m^4", "L": {"value": 3, "unit": "m"}, "K": "1"},
+              vary="L", values=[2, 3, 4, 5], solve_for=["Pcr"], output_units={"Pcr": "kN"})
+print([round(v) for v in s["series"][0]["y"]])                # [3948, 1755, 987, 632]
+```
+
+See [`examples/02_python_api.py`](examples/02_python_api.py) for backward solving, property data and unit conversion.
+
+### In LiveCalc
+
+Type one line at a time; variables and functions carry on from line to line, and units are carried through.
+
+| You type | You get |
+|---|---|
+| `5 m + 30 cm` | `5.3 m` |
+| `120 km/h to m/s` | `33.333 m/s` |
+| `m = 1200 kg`, `a = 9.81 m/s^2`, `F = m*a` | `11772 N` |
+| `F to kN` | `11.772 kN` |
+| `f(x) = 3*x^2 - 2`, then `f(4)` | `46` |
+| `20 degC to degF` | `68 °F` |
+| `5 m + 3 s` | refused: the dimensions differ |
+
+The full syntax (lists, matrices, plots, integrals and more) is in [docs/LIVECALC.md](docs/LIVECALC.md); a session file you can paste is in [`examples/05_livecalc_session.txt`](examples/05_livecalc_session.txt).
+
+### Property data with its source
+
+```bash
+sliderule data value materials-typical aluminium-6061-t6 youngs_modulus --unit GPa
+sliderule data value fluids-coolprop water-liquid dynamic_viscosity --at 20 --at-unit degC --unit "mPa*s"
+sliderule data value nist-cryo 304-stainless thermal_conductivity --at 77 --at-unit K
+```
+```
+68.9 GPa  [typical; materials-typical v0.2.1]
+1.0016 mPa*s at 20 degC  [computed, within 5 % of the reference; fluids-coolprop v0.1.0]
+7.92063 W/(m*K) at 77 K  [computed, within 2 % of the reference; nist-cryo v0.1.0]
+```
+
+In a calculation, an input whose quantity matches (modulus, density, viscosity, conductivity ...) shows **from data…**: pick the material or fluid and a temperature, and the value is
+filled in with its source, basis and uncertainty. The shipped packs and where every value comes from are in [DATA_SOURCES.md](DATA_SOURCES.md).
+
+### Your own equation
+
+Save this as `spring.json` ([`examples/04_spring_force.json`](examples/04_spring_force.json)):
+
+```json
+{ "format": "sliderule-calculation", "version": 1,
+  "calculation": {
+    "id": "custom.spring_force", "name": "Spring force", "description": "Hooke's law for a linear spring",
+    "disciplines": ["mechanical"],
+    "variables": [ {"key": "F", "label": "Force", "unit": "N"},
+                   {"key": "k", "label": "Stiffness", "unit": "N/m", "example": "2 kN/m"},
+                   {"key": "x", "label": "Extension", "unit": "m", "example": "5 cm"} ],
+    "equations": [ {"title": "Hooke's law", "text": "F = k*x"} ], "outputs": ["F"] } }
+```
+
+```bash
+sliderule custom import spring.json
+sliderule solve custom.spring_force k="3 kN/m" x="2 cm" --for F        # F = 60 N   (Force)
+```
+
+It now appears in the app's search and on the System canvas, marked *custom*. Equations are dimension-checked when saved; see [docs/CUSTOM_EQUATIONS.md](docs/CUSTOM_EQUATIONS.md).
+
+### From other programs
+
+```bash
+sliderule serve --no-browser          # or: sliderule app --api --api-token "$(openssl rand -hex 16)"
+curl -X POST http://127.0.0.1:8765/api/rpc -H "Content-Type: application/json" \
+     -d '{"method": "solve", "params": {"calc_id": "civil.column.euler_buckling",
+          "inputs": {"E": "200 GPa", "I": "8.0e-6 m^4", "L": "3 m", "K": "1"}, "solve_for": ["Pcr"]}}'
+```
+
+Every function is reachable through that one endpoint; the safeguards (loopback-only, no cross-site requests, optional token) and the routes are described in [docs/API.md](docs/API.md).
+A runnable client is [`examples/03_http_api.py`](examples/03_http_api.py).
+
+## Ways to run it
+
+| How | Command | Notes |
+|---|---|---|
+| **Browser demo** | open the [live demo](https://nhaliscak.github.io/SlideRule/) | No install. Needs a network connection the first time (Python runtime from a CDN). |
+| **Local web app** | `sliderule serve` | After `pip install ".[server]"`. Add `--reload` while developing. |
+| **Native window** | `sliderule app` | After `pip install ".[desktop]"`. The same interface in a desktop window. Tried on Linux (Qt); Windows and macOS are not tested yet. |
+| **API for other programs** | `sliderule app --api` or `sliderule serve --no-browser` | See [docs/API.md](docs/API.md). |
+| **Command line** | `sliderule list`, `show`, `solve`, `convert`, `data`, `custom`, `settings` | `sliderule --help`. |
+| **Python library** | `from sliderule import api` | [`examples/02_python_api.py`](examples/02_python_api.py). |
+| **Your own copy of the website** | `python scripts/build_web.py` | Writes `./site`; a GitHub Pages workflow is included. |
+
+## A quick tour
 
 ![The System canvas: an ISA atmosphere wired into a lift and drag calculation](docs/images/system.jpg)
-
-**4. Use LiveCalc as a scratchpad.** The *LiveCalc* tab takes one line at a time: `m = 1200 kg * 9.81 m/s^2 * 3.5 m`, `m to kN*m`, `plot sin(x)*exp(-x/4) from 0 to 20`, or a call to a library calculation. *Show steps* displays how each line was evaluated, and *Send to My equations* turns a session into a reusable calculation.
+*System Design: an ISA atmosphere wired into a lift and drag calculation.*
 
 ![LiveCalc: a unit calculation and a conversion with their steps](docs/images/livecalc.jpg)
+*LiveCalc: a unit calculation and a conversion, with their steps.*
 
-**5. Keep your own.** *My equations* holds calculations you define or save (variables with units and dimension-checked equations); they appear in search and in the System canvas, marked *custom*.
+A walkthrough of each tab is in [docs/FEATURES.md](docs/FEATURES.md#using-the-app).
 
-## Develop
+## Documentation
+
+| | |
+|---|---|
+| [docs/FEATURES.md](docs/FEATURES.md) | The full feature list and a walkthrough of the app |
+| [docs/LIVECALC.md](docs/LIVECALC.md) | LiveCalc syntax: units, functions, lists, plots, sessions, export |
+| [docs/CUSTOM_EQUATIONS.md](docs/CUSTOM_EQUATIONS.md) | Defining your own calculations, tables, vectors and matrices |
+| [docs/API.md](docs/API.md) | Using SlideRule from other programs over HTTP |
+| [docs/VERIFICATION.md](docs/VERIFICATION.md), [docs/EQUATION_AUDIT.md](docs/EQUATION_AUDIT.md) | What has been checked against sources, and what is still missing |
+| [docs/COVERAGE.md](docs/COVERAGE.md), [docs/ROADMAP.md](docs/ROADMAP.md) | What the library covers, and what is planned |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How it is built |
+| [DATA_SOURCES.md](DATA_SOURCES.md), [docs/DATA_AND_STANDARDS_STRATEGY.md](docs/DATA_AND_STANDARDS_STRATEGY.md) | The property data, its sources and licences |
+| [CHANGELOG.md](CHANGELOG.md), [PROJECT_LOG.md](PROJECT_LOG.md) | What changed, and the development record including dead ends |
+
+## Troubleshooting
+
+* **`sliderule` commands take a few seconds.** Each command loads the whole catalogue. For interactive use, `sliderule serve` or the Python library loads it once.
+* **"Port already in use."** Pick another with `sliderule serve --port 8800`. `sliderule app` chooses a free port by itself; `--api-port` sets the API port.
+* **The web demo is blank on first load, or offline.** It needs a network connection once to fetch the Python runtime (`cdn.jsdelivr.net`). The local install does not.
+* **`sliderule app` says no GUI toolkit was found.** Install one: `pip install "pywebview[qt]"` (the `desktop` extra does this on Linux), or use `sliderule serve`.
+* **A calculation "took longer than 10 s".** Raise or switch off the limit in the app's Settings (the gear) or with `sliderule settings`.
+* **A result looks wrong.** Check the assumptions listed under the calculation, then [open an issue](https://github.com/nhaliscak/SlideRule/issues/new/choose) using the "Wrong result" form.
+
+## Accuracy and limits
+
+Results are only as good as the assumptions listed under each calculation. SlideRule is a learning and checking aid, not a substitute for codes, standards or engineering judgement.
+Nothing here is certified, the bundled property data is marked **not for design**, and the software comes with no warranty (see the licence). Do not use a result for a
+safety-critical decision without checking it independently.
+
+## Contributing
+
+Bug reports and wrong-result reports are as valuable as code. See [CONTRIBUTING.md](CONTRIBUTING.md) (setup, the rules for formulas and data), the [code of conduct](CODE_OF_CONDUCT.md)
+and the [security policy](SECURITY.md). Adding a calculation takes about 15 lines: see `src/sliderule/library/` and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ```bash
 pip install -e ".[dev]"
-pytest
+ruff check . && pytest
 ```
 
-Adding a calculation is ~15 lines (see `src/sliderule/library/` and `docs/ARCHITECTURE.md`).
+## Support
 
-## Caveats
-
-Results are only as good as the assumptions listed under each calculation. This is a learning and checking aid, not a
-substitute for codes, standards or engineering judgement. Nothing here is certified, the bundled property data is marked
-not for design, and the software comes with no warranty (see the licence). Do not use a result for a safety-critical decision without
-checking it independently.
+SlideRule is free and MIT licensed. If it saves you time and you would like to say thanks, you can
+[buy me a coffee](https://buymeacoffee.com/nhaliscak). Donations are entirely optional, unlock nothing, and do not buy priority for support requests;
+issues and pull requests are welcome either way.
 
 ## Licence and data
 
-Code: [MIT License](LICENSE). Bundled data (the two datapacks) and where every value comes from: [DATA_SOURCES.md](DATA_SOURCES.md).
-KaTeX (`web/vendor/katex`) keeps its own MIT licence file. Copyrighted reference works are never stored in this repository;
-the importer in `scripts/import_crc_materials.py` builds a private pack on your own machine from a copy you own.
-Contributions: [CONTRIBUTING.md](CONTRIBUTING.md) ([code of conduct](CODE_OF_CONDUCT.md), [security policy](SECURITY.md), [changelog](CHANGELOG.md)). To cite SlideRule: [CITATION.cff](CITATION.cff).
+Code: [MIT License](LICENSE). The four bundled datapacks and where every value comes from: [DATA_SOURCES.md](DATA_SOURCES.md). KaTeX (`web/vendor/katex`) keeps its own MIT licence file.
+Copyrighted reference works are never stored in this repository; the importer in `scripts/import_crc_materials.py` builds a private pack on your own machine from a copy you own.
+To cite SlideRule: [CITATION.cff](CITATION.cff).
