@@ -6,7 +6,7 @@ one the formula is written for. Deterministic code only: no LLMs or SLMs anywher
 
 [![CI](https://github.com/nhaliscak/SlideRule/actions/workflows/ci.yml/badge.svg)](https://github.com/nhaliscak/SlideRule/actions/workflows/ci.yml)
 MIT licence · Python 3.12+ ·
-[Live demo](https://nhaliscak.github.io/SlideRule/) · [Examples](examples/) · [Documentation](#documentation) · [Changelog](CHANGELOG.md) · [Support the project](#support)
+[Examples](examples/) · [Documentation](#documentation) · [Changelog](CHANGELOG.md) · [Support the project](#support)
 
 ![A solved calculation (moist air): results in chosen units, then the numeric worked solution](docs/images/calculation.jpg)
 
@@ -16,10 +16,7 @@ MIT licence · Python 3.12+ ·
 
 ## Quick start
 
-**In the browser, nothing to install:** open the [live demo](https://nhaliscak.github.io/SlideRule/). It runs the same Python engine in your browser (the first load downloads the
-Python runtime, then it is cached).
-
-**On your computer** (Python 3.12 or newer):
+SlideRule needs Python 3.12 or newer.
 
 ```bash
 git clone https://github.com/nhaliscak/SlideRule && cd SlideRule
@@ -37,7 +34,7 @@ sliderule serve                # opens http://127.0.0.1:8765
 * **Beyond algebra.** Derivatives and integrals, ordinary and partial differential equations, boundary-value problems, series, stochastic and fractional equations, complex numbers, vectors and matrices.
 * **Your own equations.** Define calculations with units in the browser or as plain JSON files and use them like the built-in ones.
 * **Property data with sources.** Materials and fluids with the basis (minimum, typical, design, computed), the source and the uncertainty of every number, offered next to an input as **from data…**.
-* **Runs where you are.** In the browser, as a local server, in a native window, from the command line, from Python, and over HTTP for other programs.
+* **Runs where you are.** As a local web app in your browser, in a native window, from the command line, from Python, and over HTTP for other programs.
 
 The complete feature list is in [docs/FEATURES.md](docs/FEATURES.md).
 
@@ -165,13 +162,12 @@ A runnable client is [`examples/03_http_api.py`](examples/03_http_api.py).
 
 | How | Command | Notes |
 |---|---|---|
-| **Browser demo** | open the [live demo](https://nhaliscak.github.io/SlideRule/) | No install. Needs a network connection the first time (Python runtime from a CDN). |
 | **Local web app** | `sliderule serve` | After `pip install ".[server]"`. Add `--reload` while developing. |
 | **Native window** | `sliderule app` | After `pip install ".[desktop]"`. The same interface in a desktop window. Tried on Linux (Qt); Windows and macOS are not tested yet. |
 | **API for other programs** | `sliderule app --api` or `sliderule serve --no-browser` | See [docs/API.md](docs/API.md). |
 | **Command line** | `sliderule list`, `show`, `solve`, `convert`, `data`, `custom`, `settings` | `sliderule --help`. |
 | **Python library** | `from sliderule import api` | [`examples/02_python_api.py`](examples/02_python_api.py). |
-| **Your own copy of the website** | `python scripts/build_web.py` | Writes `./site`; a GitHub Pages workflow is included. |
+| **Static website you host yourself** | `python scripts/build_web.py` | Writes `./site`, the same app running the Python engine in the browser (Pyodide). Host it on any static server; it needs a network connection once to fetch the Python runtime. There is no hosted demo. |
 
 ## A quick tour
 
@@ -201,7 +197,7 @@ A walkthrough of each tab is in [docs/FEATURES.md](docs/FEATURES.md#using-the-ap
 
 * **`sliderule` commands take a few seconds.** Each command loads the whole catalogue. For interactive use, `sliderule serve` or the Python library loads it once.
 * **"Port already in use."** Pick another with `sliderule serve --port 8800`. `sliderule app` chooses a free port by itself; `--api-port` sets the API port.
-* **The web demo is blank on first load, or offline.** It needs a network connection once to fetch the Python runtime (`cdn.jsdelivr.net`). The local install does not.
+* **A self-hosted static copy is blank on first load, or offline.** It needs a network connection once to fetch the Python runtime (`cdn.jsdelivr.net`). The local install does not.
 * **`sliderule app` says no GUI toolkit was found.** Install one: `pip install "pywebview[qt]"` (the `desktop` extra does this on Linux), or use `sliderule serve`.
 * **A calculation "took longer than 10 s".** Raise or switch off the limit in the app's Settings (the gear) or with `sliderule settings`.
 * **A result looks wrong.** Check the assumptions listed under the calculation, then [open an issue](https://github.com/nhaliscak/SlideRule/issues/new/choose) using the "Wrong result" form.
