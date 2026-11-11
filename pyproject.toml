@@ -30,7 +30,7 @@ Documentation = "https://github.com/nhaliscak/SlideRule/tree/main/docs"
 
 [project.optional-dependencies]
 server = ["fastapi>=0.110", "uvicorn>=0.27"]
-desktop = ["fastapi>=0.110", "uvicorn>=0.27", "pywebview[qt]>=5; sys_platform == 'linux'", "pywebview>=5; sys_platform != 'linux'"]
+desktop = ["fastapi>=0.110", "uvicorn>=0.27", "pywebview[qt]>=6.2.1; sys_platform == 'linux'", "pywebview>=5; sys_platform != 'linux'"]
 props = ["CoolProp>=6.6"]
 dev = ["CoolProp>=6.6", "pytest>=8", "httpx>=0.27", "fastapi>=0.110", "uvicorn>=0.27", "ruff>=0.5"]
 
