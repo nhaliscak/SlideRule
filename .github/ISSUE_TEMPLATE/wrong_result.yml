@@ -1,0 +1,22 @@
+name: Wrong result or wrong formula
+description: A calculation gives a result that disagrees with a trusted source
+labels: ["accuracy"]
+body:
+  - type: input
+    id: calc
+    attributes: { label: Calculation, description: "Its name or id, e.g. `civil.column.euler_buckling`." }
+    validations: { required: true }
+  - type: textarea
+    id: inputs
+    attributes: { label: Inputs and what you solved for, description: "Values with units, exactly as entered. 'Copy as text' in the app gives this." }
+    validations: { required: true }
+  - type: textarea
+    id: got
+    attributes: { label: Result SlideRule gave }
+    validations: { required: true }
+  - type: textarea
+    id: expected
+    attributes:
+      label: Result you expect, and why
+      description: "A textbook example, standard clause, independent calculation or a measured value. Cite it (title, edition, equation or page); do not paste copyrighted pages."
+    validations: { required: true }

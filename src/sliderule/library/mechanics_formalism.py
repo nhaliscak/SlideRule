@@ -1,0 +1,94 @@
+"""Classical mechanics, the formalism and the rest of chaos: the 3-D inertia tensor, canonical transformations, Hamilton–Jacobi theory, Noether's theorem at work, the standard and Hénon maps, fractal dimension."""
+
+from ..core import C, V
+from ._thin import mk
+
+AM = "Analytical Mechanics"
+NDC = "Nonlinear Dynamics and Chaos"
+GPS = "Goldstein, Poole & Safko, Classical Mechanics"
+LL = "Landau & Lifshitz, Mechanics"
+TAYLOR = "Taylor, Classical Mechanics"
+STROGATZ = "Strogatz, Nonlinear Dynamics and Chaos"
+LICHT = "Lichtenberg & Lieberman, Regular and Chaotic Dynamics"
+OTT = "Ott, Chaos in Dynamical Systems"
+
+CALCS = [
+    mk("physics", "physics.analytical.inertia_tensor_3d", "Inertia tensor of a rigid body in 3-D: principal moments of inertia", [AM],
+       "Principal moments of inertia (largest, middle and smallest) from the six independent components of the inertia tensor, by the trigonometric solution of its characteristic cubic.",
+       [V("Ixx", "Moment of inertia about x", "kg*m^2", latex=r"I_{xx}"), V("Iyy", "Moment of inertia about y", "kg*m^2", latex=r"I_{yy}"), V("Izz", "Moment of inertia about z", "kg*m^2", latex=r"I_{zz}"), V("Ixy", "Product of inertia ∫xy dm", "kg*m^2", signed=True, latex=r"I_{xy}"),
+        V("Ixz", "Product of inertia ∫xz dm", "kg*m^2", signed=True, latex=r"I_{xz}"), V("Iyz", "Product of inertia ∫yz dm", "kg*m^2", signed=True, latex=r"I_{yz}"), V("qm", "Mean principal moment (trace / 3)", "kg*m^2"), V("pp", "Spread of the principal moments", "kg*m^2"),
+        V("rr", "Cosine of three times the eigen-angle", "1", signed=True), V("ph", "Eigen-angle", "rad"), V("Ia", "Largest principal moment", "kg*m^2", latex=r"I_1"), V("Ib", "Middle principal moment", "kg*m^2", latex=r"I_2"), V("Ic", "Smallest principal moment", "kg*m^2", latex=r"I_3")],
+       [("Mean moment", "qm = (Ixx + Iyy + Izz)/3"), ("Spread", "pp = sqrt(((Ixx - qm)^2 + (Iyy - qm)^2 + (Izz - qm)^2 + 2*(Ixy^2 + Ixz^2 + Iyz^2))/6)"),
+        ("Eigen-angle cosine", "rr = Max(-1, Min(1, ((Ixx - qm)*(Iyy - qm)*(Izz - qm) - 2*Ixy*Ixz*Iyz - (Ixx - qm)*Iyz^2 - (Iyy - qm)*Ixz^2 - (Izz - qm)*Ixy^2)/(2*pp^3)))"), ("Eigen-angle", "ph = acos(rr)/3"),
+        ("Largest moment", "Ia = qm + 2*pp*cos(ph)"), ("Smallest moment", "Ic = qm + 2*pp*cos(ph + 2*pi/3)"), ("Middle moment", "Ib = 3*qm - Ia - Ic")],
+       ["qm", "pp", "rr", "ph", "Ia", "Ib", "Ic"], {"Ixx": "0.12 kg*m^2", "Iyy": "0.20 kg*m^2", "Izz": "0.25 kg*m^2", "Ixy": "0.03 kg*m^2", "Ixz": "-0.02 kg*m^2", "Iyz": "0.01 kg*m^2"},
+       GPS + "; " + LL, "Products of inertia defined as ∫xy dm and so on, so the tensor has −I_xy off the diagonal; the trigonometric solution of the cubic needs a body that is not a sphere (all principal moments equal)", extra=("mechanical",),
+       tags=["inertia tensor", "principal axes", "principal moments", "rigid body", "eigenvalues"]),
+    mk("physics", "physics.analytical.rigid_body_angular_momentum_3d", "Rigid body with a general inertia tensor: angular momentum, its angle to the rotation axis and the kinetic energy", [AM],
+       "For an angular velocity about any axis: the angular momentum components L = I·ω, its size, the angle between L and ω (zero only about a principal axis) and the rotational kinetic energy ½ ω·L.",
+       [V("Ixx", "Moment of inertia about x", "kg*m^2", latex=r"I_{xx}"), V("Iyy", "Moment of inertia about y", "kg*m^2", latex=r"I_{yy}"), V("Izz", "Moment of inertia about z", "kg*m^2", latex=r"I_{zz}"), V("Ixy", "Product of inertia ∫xy dm", "kg*m^2", signed=True, latex=r"I_{xy}"),
+        V("Ixz", "Product of inertia ∫xz dm", "kg*m^2", signed=True, latex=r"I_{xz}"), V("Iyz", "Product of inertia ∫yz dm", "kg*m^2", signed=True, latex=r"I_{yz}"), V("wx", "Angular velocity, x", "rad/s", signed=True, latex=r"\omega_x"), V("wy", "Angular velocity, y", "rad/s", signed=True, latex=r"\omega_y"),
+        V("wz", "Angular velocity, z", "rad/s", signed=True, latex=r"\omega_z"), V("Lx", "Angular momentum, x", "kg*m^2/s", signed=True, latex=r"L_x"), V("Ly", "Angular momentum, y", "kg*m^2/s", signed=True, latex=r"L_y"), V("Lz", "Angular momentum, z", "kg*m^2/s", signed=True, latex=r"L_z"),
+        V("Lm", "Size of the angular momentum", "kg*m^2/s", latex=r"L"), V("an", "Angle between L and ω", "deg", latex=r"\alpha"), V("Tk", "Rotational kinetic energy", "J", latex=r"T")],
+       [("Angular momentum x", "Lx = Ixx*wx - Ixy*wy - Ixz*wz"), ("Angular momentum y", "Ly = -Ixy*wx + Iyy*wy - Iyz*wz"), ("Angular momentum z", "Lz = -Ixz*wx - Iyz*wy + Izz*wz"), ("Size of L", "Lm = sqrt(Lx^2 + Ly^2 + Lz^2)"),
+        ("Angle between L and the axis", "an = acos(Max(-1, Min(1, (wx*Lx + wy*Ly + wz*Lz)/(sqrt(wx^2 + wy^2 + wz^2)*Lm))))"), ("Kinetic energy", "Tk = (wx*Lx + wy*Ly + wz*Lz)/2")],
+       ["Lx", "Ly", "Lz", "Lm", "an", "Tk"], {"Ixx": "0.12 kg*m^2", "Iyy": "0.20 kg*m^2", "Izz": "0.25 kg*m^2", "Ixy": "0.03 kg*m^2", "Ixz": "-0.02 kg*m^2", "Iyz": "0.01 kg*m^2", "wx": "5 rad/s", "wy": "3 rad/s", "wz": "20 rad/s"},
+       GPS + "; " + LL, "Inertia tensor about the centre of mass (or a fixed point) in body-fixed axes; products of inertia defined as ∫xy dm, so the tensor has −I_xy off the diagonal", extra=("mechanical",), tags=["angular momentum", "rigid body", "kinetic energy", "inertia tensor", "precession"]),
+    mk("physics", "physics.analytical.linear_canonical_transformation", "Linear canonical transformation in one degree of freedom: symplectic test and the transformed oscillator Hamiltonian", [AM],
+       "For new variables Q = a q + b p and P = c q + d p: the Poisson bracket {Q, P} (equal to ad − bc, which must be 1 for the transformation to be canonical), the area scaling in phase space, and the coefficients of the oscillator Hamiltonian H = p²/2m + kq²/2 written in Q and P.",
+       [V("a", "Coefficient a (Q = a q + b p)", "1"), V("b", "Coefficient b", "m*s/(kg*m)", signed=True), V("c", "Coefficient c (P = c q + d p)", "kg*m/(s*m)", signed=True), V("d", "Coefficient d", "1"), V("m", "Mass", "kg"), V("kk", "Stiffness", "N/m"),
+        V("pb", "Poisson bracket {Q, P}", "1", signed=True, latex=r"\{Q,P\}"), V("cn", "Canonical (1 = yes)", "1"), V("hPP", "Coefficient of P² in H", "1/kg", latex=r"H_{PP}"), V("hQQ", "Coefficient of Q² in H", "kg/s^2", latex=r"H_{QQ}"), V("hQP", "Coefficient of Q P in H", "1/s", signed=True, latex=r"H_{QP}")],
+       [("Poisson bracket", "pb = a*d - b*c"), ("Canonical", "cn = Piecewise((1, Abs(pb - 1) < 1e-9), (0, True))"), ("P squared", "hPP = (a^2/(2*m) + kk*b^2/2)/pb^2"), ("Q squared", "hQQ = (c^2/(2*m) + kk*d^2/2)/pb^2"), ("Q P", "hQP = -(a*c/m + kk*b*d)/pb^2")],
+       ["pb", "cn", "hPP", "hQQ", "hQP"], {"a": "1.2", "b": "0.1 m*s/(kg*m)", "c": "2 kg*m/(s*m)", "d": "1.0", "m": "2 kg", "kk": "800 N/m"}, GPS + "; " + TAYLOR,
+       "Linear transformation of (q, p); the bracket is computed from the definition {Q, P} = ∂Q/∂q ∂P/∂p − ∂Q/∂p ∂P/∂q; a rescaling Q = λq, P = p/λ is canonical (area-preserving), a pure stretch of one variable is not (Liouville's theorem)", tags=["canonical transformation", "poisson bracket", "symplectic", "liouville", "phase space"]),
+    mk("physics", "physics.analytical.canonical_action_angle_oscillator", "Action–angle variables of the harmonic oscillator: the canonical change of variables and the motion in it", [AM],
+       "From a position and momentum: the energy, the action J and the angle φ, the check that (q, p) → (J, φ) preserves the Poisson bracket {q, p} = 1, the angle growing uniformly at ω, and the position and momentum a time later.",
+       [V("m", "Mass", "kg"), V("kk", "Stiffness", "N/m"), V("q0", "Position", "m", signed=True), V("p0", "Momentum", "kg*m/s", signed=True), V("t", "Time later", "s"), V("w", "Angular frequency", "rad/s", latex=r"\omega"), V("En", "Energy", "J", latex=r"E"), V("Ja", "Action J = E/ω", "J*s", latex=r"J"),
+        V("f0", "Angle φ", "rad", signed=True, latex=r"\varphi_0"), V("pb", "Poisson bracket {q, p} in the new variables", "1", latex=r"\{q,p\}_{J,\varphi}"), V("f1", "Angle after the time", "rad", signed=True, latex=r"\varphi(t)"), V("q1", "Position after the time", "m", signed=True, latex=r"q(t)"),
+        V("p1", "Momentum after the time", "kg*m/s", signed=True, latex=r"p(t)"), V("E1", "Energy after the time", "J", latex=r"E(t)")],
+       [("Angular frequency", "w = sqrt(kk/m)"), ("Energy", "En = p0^2/(2*m) + kk*q0^2/2"), ("Action", "Ja = En/w"), ("Angle", "f0 = atan2(m*w*q0, p0)"),
+        ("Bracket in J and phi", "pb = sqrt(2*Ja/(m*w))*cos(f0)*sqrt(m*w/(2*Ja))*cos(f0) + sin(f0)/sqrt(2*Ja*m*w)*sqrt(2*Ja*m*w)*sin(f0)"), ("Angle later", "f1 = f0 + w*t"),
+        ("Position later", "q1 = sqrt(2*Ja/(m*w))*sin(f1)"), ("Momentum later", "p1 = sqrt(2*Ja*m*w)*cos(f1)"), ("Energy later", "E1 = p1^2/(2*m) + kk*q1^2/2")],
+       ["w", "En", "Ja", "f0", "pb", "f1", "q1", "p1", "E1"], {"m": "0.5 kg", "kk": "200 N/m", "q0": "0.05 m", "p0": "0.3 kg*m/s", "t": "0.4 s"}, GPS + "; " + LL,
+       "q = √(2J/mω) sin φ, p = √(2Jmω) cos φ; H = ωJ depends on J only, so J is constant and φ' = ∂H/∂J = ω", tags=["action angle", "canonical transformation", "harmonic oscillator", "poisson bracket", "integrable"]),
+    mk("physics", "physics.analytical.hamilton_jacobi_oscillator", "Hamilton–Jacobi theory for the harmonic oscillator: characteristic function, momentum and the time from ∂W/∂E", [AM],
+       "The reduced action W(q, E) of the oscillator in closed form, the momentum p = ∂W/∂q (checked against the energy), and the time since the last zero crossing as ∂W/∂E.",
+       [V("m", "Mass", "kg"), V("kk", "Stiffness", "N/m"), V("En", "Energy", "J", latex=r"E"), V("q", "Position", "m", signed=True), V("w", "Angular frequency", "rad/s", latex=r"\omega"), V("am", "Amplitude", "m", latex=r"A"), V("pp", "Momentum from the energy", "kg*m/s", latex=r"p"),
+        V("W", "Reduced action W(q, E)", "J*s", signed=True), V("tz", "Time since the zero crossing, ∂W/∂E", "s", signed=True), V("Tp", "Period", "s", latex=r"T")],
+       [("Angular frequency", "w = sqrt(kk/m)"), ("Amplitude", "am = sqrt(2*En/kk)"), ("Momentum", "pp = sqrt(2*m*(En - kk*q^2/2))"), ("Characteristic function", "W = q*pp/2 + En/w*asin(q/am)"), ("Time from dW/dE", "tz = asin(q/am)/w"), ("Period", "Tp = 2*pi/w")],
+       ["w", "am", "pp", "W", "tz", "Tp"], {"m": "0.5 kg", "kk": "200 N/m", "En": "0.4 J", "q": "0.03 m"}, GPS + "; " + LL, "W(q, E) = ∫p dq from the zero crossing, on the branch moving in +q; the Hamilton–Jacobi equation H(q, ∂W/∂q) = E is solved by separation",
+       validity=[("q < sqrt(2*En/kk)", "The position is beyond the turning point")], tags=["hamilton jacobi", "characteristic function", "reduced action", "harmonic oscillator", "wkb"]),
+    mk("physics", "physics.analytical.noether_anisotropic_oscillator", "Noether's theorem at work: angular momentum of a 2-D oscillator is conserved only when the springs are equal", [AM],
+       "A mass on two perpendicular springs: the torque on it (zero only when the potential is rotationally symmetric, kx = ky), the angular momentum at the start and after a time, and the energy of the x motion, which is conserved separately.",
+       [V("m", "Mass", "kg"), V("kx", "Stiffness along x", "N/m", latex=r"k_x"), V("ky", "Stiffness along y", "N/m", latex=r"k_y"), V("x0", "Initial x", "m", signed=True), V("y0", "Initial y", "m", signed=True), V("ux", "Initial x velocity", "m/s", signed=True, latex=r"v_{x0}"),
+        V("uy", "Initial y velocity", "m/s", signed=True, latex=r"v_{y0}"), V("t", "Time", "s"), V("wx", "Angular frequency in x", "rad/s", latex=r"\omega_x"), V("wy", "Angular frequency in y", "rad/s", latex=r"\omega_y"), V("tq", "Torque about the origin at the start", "N*m", signed=True, latex=r"\tau"),
+        V("L0", "Angular momentum at the start", "kg*m^2/s", signed=True, latex=r"L_0"), V("x1", "x after the time", "m", signed=True), V("y1", "y after the time", "m", signed=True), V("vx1", "x velocity after the time", "m/s", signed=True), V("vy1", "y velocity after the time", "m/s", signed=True),
+        V("L1", "Angular momentum after the time", "kg*m^2/s", signed=True, latex=r"L(t)"), V("dL", "Change of angular momentum", "kg*m^2/s", signed=True, latex=r"\Delta L"), V("Ex0", "Energy of the x motion", "J", latex=r"E_x"), V("Ex1", "Energy of the x motion after the time", "J")],
+       [("Frequency x", "wx = sqrt(kx/m)"), ("Frequency y", "wy = sqrt(ky/m)"), ("Torque", "tq = (kx - ky)*x0*y0"), ("Angular momentum at the start", "L0 = m*(x0*uy - y0*ux)"),
+        ("x later", "x1 = x0*cos(wx*t) + ux/wx*sin(wx*t)"), ("y later", "y1 = y0*cos(wy*t) + uy/wy*sin(wy*t)"), ("x velocity later", "vx1 = -x0*wx*sin(wx*t) + ux*cos(wx*t)"), ("y velocity later", "vy1 = -y0*wy*sin(wy*t) + uy*cos(wy*t)"),
+        ("Angular momentum later", "L1 = m*(x1*vy1 - y1*vx1)"), ("Change", "dL = L1 - L0"), ("Energy x", "Ex0 = m*ux^2/2 + kx*x0^2/2"), ("Energy x later", "Ex1 = m*vx1^2/2 + kx*x1^2/2")],
+       ["wx", "wy", "tq", "L0", "x1", "y1", "vx1", "vy1", "L1", "dL", "Ex0", "Ex1"], {"m": "1 kg", "kx": "100 N/m", "ky": "150 N/m", "x0": "0.1 m", "y0": "0.05 m", "ux": "0 m/s", "uy": "0.5 m/s", "t": "0.7 s"}, GPS + "; " + LL + "; " + TAYLOR,
+       "U = ½ kx x² + ½ ky y²: invariance of U under rotation (kx = ky) gives conservation of L_z (Noether); time-translation invariance conserves the energy, and the separable potential conserves each direction's energy too", tags=["noether", "symmetry", "conservation law", "angular momentum", "anisotropic oscillator"]),
+
+    # ------------------------------------------------------------------ chaos: the standard and Hénon maps, fractal dimension
+    mk("physics", "physics.nonlinear.standard_map_stability", "Chirikov standard map (kicked rotor): fixed points, stability, the chaos threshold and diffusion", [NDC],
+       "For p' = p + K sin θ, θ' = θ + p': the stability (trace of the Jacobian) of the two fixed points, the rotation angle around the elliptic one, the comparison with the Greene threshold for global chaos, and the quasilinear diffusion and Lyapunov exponent for strong kicking.",
+       [V("K", "Kicking strength K", "1"), C("Kc", "Greene threshold for global chaos", 0.971635406, "1", latex=r"K_c"), V("t0", "Trace of the Jacobian at (0, 0)", "1"), V("t1", "Trace of the Jacobian at (π, 0)", "1", signed=True), V("el", "Fixed point (π, 0) is elliptic (1 = yes)", "1"), V("om", "Rotation angle per step around (π, 0)", "rad", latex=r"\omega"),
+        V("rK", "K over the Greene threshold", "1"), V("rg", "Regime (1 mostly regular, 2 globally chaotic)", "1"), V("Dq", "Quasilinear momentum diffusion K²/4 per step (for K ≫ 1)", "1", latex=r"D"), V("ly", "Lyapunov exponent estimate ln(K/2) for K ≫ 1 (0 below K = 2)", "1", latex=r"\lambda")],
+       [("Trace at (0, 0)", "t0 = 2 + K"), ("Trace at (pi, 0)", "t1 = 2 - K"), ("Elliptic", "el = Piecewise((1, K < 4), (0, True))"), ("Rotation angle", "om = acos(Max(-1, Min(1, 1 - K/2)))"), ("Ratio", "rK = K/Kc"), ("Regime", "rg = Piecewise((1, K < Kc), (2, True))"),
+        ("Diffusion", "Dq = K^2/4"), ("Lyapunov exponent", "ly = Max(0, log(K/2))")], ["t0", "t1", "el", "om", "rK", "rg", "Dq", "ly"], {"K": "0.5"}, LICHT + "; Chirikov, Phys. Rep. 52, 263 (1979); Greene, J. Math. Phys. 20, 1183 (1979)",
+       "Area-preserving map on the torus; the diffusion and Lyapunov formulas hold for K well above 1 and ignore accelerator modes and the correlation between successive kicks (at K = 10 the real diffusion is about 0.65 of the quasilinear value); the Greene value 0.9716 is where the last invariant circle (golden mean) breaks", tags=["standard map", "kicked rotor", "chirikov", "kam", "chaos threshold"]),
+    mk("physics", "physics.nonlinear.henon_map_properties", "Hénon map: fixed points, their stability, area contraction and the Kaplan–Yorke dimension", [NDC],
+       "For x' = 1 − a x² + y, y' = b x: the two fixed points, the multipliers of the one on the attractor, the area contraction per step, the second Lyapunov exponent from the first (their sum is ln b) and the Kaplan–Yorke dimension.",
+       [V("a", "Parameter a", "1"), V("b", "Parameter b", "1", max=0.9999), V("l1", "Largest Lyapunov exponent", "1", latex=r"\lambda_1"), V("xp", "Fixed point x₊", "1", signed=True, latex=r"x_+"), V("xm", "Fixed point x₋", "1", signed=True, latex=r"x_-"), V("m1", "Multiplier of x₊, larger magnitude", "1", signed=True, latex=r"\mu_1"),
+        V("m2", "Multiplier of x₊, smaller magnitude", "1", signed=True, latex=r"\mu_2"), V("ar", "Area contraction per step |det J|", "1"), V("l2", "Second Lyapunov exponent", "1", signed=True, latex=r"\lambda_2"), V("dk", "Kaplan–Yorke dimension", "1", latex=r"D_{KY}")],
+       [("Fixed point +", "xp = (-(1 - b) + sqrt((1 - b)^2 + 4*a))/(2*a)"), ("Fixed point -", "xm = (-(1 - b) - sqrt((1 - b)^2 + 4*a))/(2*a)"), ("Multiplier 1", "m1 = -a*xp - sqrt(a^2*xp^2 + b)"), ("Multiplier 2", "m2 = -a*xp + sqrt(a^2*xp^2 + b)"),
+        ("Area contraction", "ar = b"), ("Second exponent", "l2 = log(b) - l1"), ("Kaplan–Yorke dimension", "dk = 1 + l1/Abs(l2)")], ["xp", "xm", "m1", "m2", "ar", "l2", "dk"], {"a": "1.4", "b": "0.3", "l1": "0.42"}, OTT + "; " + STROGATZ + "; Hénon, Commun. Math. Phys. 50, 69 (1976)",
+       "Hénon's two-dimensional map with its classic parameters (the largest exponent 0.42 is from simulation and is an input); the multipliers are those of the Jacobian [[−2ax, 1], [b, 0]]", tags=["henon map", "strange attractor", "kaplan yorke", "fixed point stability", "area contraction"]),
+    mk("physics", "physics.nonlinear.fractal_dimension", "Fractal dimension: self-similarity and box counting", [NDC],
+       "Dimension of a self-similar set made of N copies scaled by 1/s, the box-counting dimension from the numbers of boxes at two box sizes, and the number of boxes expected at a third size.",
+       [V("Np", "Number of copies N", "1"), V("sc", "Scale factor s (each copy is 1/s as large)", "1"), V("e1", "Box size 1", "1", latex=r"\varepsilon_1"), V("N1", "Boxes needed at size 1", "1"), V("e2", "Box size 2 (smaller)", "1", latex=r"\varepsilon_2"), V("N2", "Boxes needed at size 2", "1"), V("e3", "A third box size", "1", latex=r"\varepsilon_3"),
+        V("Ds", "Similarity dimension ln N / ln s", "1", latex=r"D_s"), V("Db", "Box-counting dimension", "1", latex=r"D_b"), V("N3", "Boxes expected at the third size", "1")],
+       [("Similarity dimension", "Ds = log(Np)/log(sc)"), ("Box-counting dimension", "Db = log(N2/N1)/log(e1/e2)"), ("Boxes at size 3", "N3 = N2*(e2/e3)^Db")], ["Ds", "Db", "N3"], {"Np": "4", "sc": "3", "e1": "10", "N1": "100", "e2": "1", "N2": "1780", "e3": "0.1"},
+       OTT + "; Mandelbrot, The Fractal Geometry of Nature", "N ∝ ε^(−D) over the scales measured (a real object is fractal only over a range of sizes); the Koch curve (N = 4, s = 3, D = 1.2619) and a coastline-like count shown", tags=["fractal", "box counting", "self similarity", "hausdorff dimension", "koch curve"]),
+]

@@ -1,0 +1,16 @@
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.venv/
+dist/
+build/
+node_modules/
+/site/
+
+# local extracts of copyrighted reference data must never be committed
+src/sliderule/datapacks/crc-*/
+**/crc-materials/
+
+# editor and assistant configuration
+.idea/
+.claude/

@@ -1,0 +1,56 @@
+from ..core import C, Calculation, V
+
+CALCS = [
+    Calculation(
+        id="agricultural.irrigation.crop_water_requirement", name="Crop water requirement and irrigation flow",
+        disciplines=["agricultural", "civil"], subdisciplines=["Irrigation Engineering", "Soil and Water Engineering"],
+        description="Crop evapotranspiration from reference ET and crop coefficient, gross irrigation requirement for application efficiency, and the pump flow to deliver it.",
+        variables=[V("ET0", "Reference evapotranspiration", "mm/day", latex=r"ET_0"), V("Kc", "Crop coefficient", "1", latex=r"K_c"), V("Ea", "Application efficiency", "%", latex=r"E_a", min=1, max=100), V("A", "Irrigated area", "ha"),
+                   V("th", "Pumping hours per day", "h", latex=r"t_p"), C("tday", "One day", 1, "day", latex=r"1\,\mathrm{day}"), V("ETc", "Crop evapotranspiration", "mm/day", latex=r"ET_c"), V("Dg", "Gross irrigation depth rate", "mm/day", latex=r"D_g"),
+                   V("Vd", "Daily water volume", "m^3/day", latex=r"V_d"), V("Q", "Required system flow", "L/s")],
+        equations=[("Crop ET", "ETc = Kc*ET0"), ("Gross requirement", "Dg = ETc/Ea"), ("Daily volume", "Vd = Dg*A"), ("System flow", "Q = Vd*tday/th")],
+        outputs=["ETc", "Dg", "Vd", "Q"], tags=["irrigation", "evapotranspiration", "fao-56", "crop", "water demand", "pump"], assumptions=["Peak-month ET0; no rainfall contribution or leaching requirement"],
+        references=["FAO Irrigation and Drainage Paper 56"], example={"ET0": "5.5 mm/day", "Kc": "1.15", "Ea": "75 %", "A": "10 ha", "th": "18 h"}),
+    Calculation(
+        id="agricultural.irrigation.sprinkler_nozzle", name="Sprinkler nozzle discharge and application rate",
+        disciplines=["agricultural", "civil"], subdisciplines=["Irrigation Engineering"],
+        description="Discharge of a sprinkler nozzle from operating pressure and the average application rate for a given spacing.",
+        variables=[V("Cd", "Nozzle discharge coefficient", "1", latex=r"C_d", default=0.95), V("dn", "Nozzle diameter", "mm"), V("p", "Operating pressure", "kPa"), V("rho", "Water density", "kg/m^3", latex=r"\rho", default=1000),
+                   V("Sl", "Spacing along lateral", "m", latex=r"S_l"), V("Sm", "Lateral spacing", "m", latex=r"S_m"), V("q", "Nozzle discharge", "L/min"), V("AR", "Application rate", "mm/h")],
+        equations=[("Discharge", "q = Cd*pi*dn^2/4*sqrt(2*p/rho)"), ("Application rate", "AR = q/(Sl*Sm)")], outputs=["q", "AR"], tags=["sprinkler", "irrigation", "nozzle", "application rate", "pressure"],
+        assumptions=["Uniform overlap; compare AR with soil infiltration rate"], references=["Keller & Bliesner, Sprinkle and Trickle Irrigation"], example={"Cd": "0.95", "dn": "4.8 mm", "p": "300 kPa", "rho": "1000 kg/m^3", "Sl": "12 m", "Sm": "18 m"}),
+    Calculation(
+        id="agricultural.machinery.field_capacity_drawbar", name="Field capacity and drawbar power",
+        disciplines=["agricultural", "mechanical"], subdisciplines=["Farm Machinery Engineering"],
+        description="Effective field capacity, time per hectare, and the drawbar power for a draft load.",
+        variables=[V("S", "Travel speed", "km/h"), V("W", "Implement working width", "m"), V("ef", "Field efficiency", "%", latex=r"\eta_f", min=1, max=100), V("Fd", "Draft force", "kN"), V("Cf", "Effective field capacity", "ha/h", latex=r"C_e"),
+                   V("tph", "Time per hectare", "h/ha"), V("Pd", "Drawbar power", "kW", latex=r"P_d")],
+        equations=[("Field capacity", "Cf = S*W*ef"), ("Time per hectare", "tph = 1/Cf"), ("Drawbar power", "Pd = Fd*S")], outputs=["Cf", "tph", "Pd"], tags=["tractor", "implement", "tillage", "drawbar", "field capacity", "farm"],
+        assumptions=["Constant speed on level ground; slip and rolling resistance are in the measured draft"], references=["ASABE D497; Srivastava et al., Engineering Principles of Agricultural Machines"], example={"S": "8 km/h", "W": "6 m", "ef": "80 %", "Fd": "30 kN"}),
+    Calculation(
+        id="agricultural.soil.usle_erosion", name="Universal Soil Loss Equation (USLE)",
+        disciplines=["agricultural", "civil", "environmental"], subdisciplines=["Soil and Water Engineering", "Natural Resources Engineering"],
+        description="Average annual soil loss A = R·K·LS·C·P in metric units; the factor units combine to t/(ha·yr).",
+        variables=[V("R", "Rainfall erosivity", "MJ*mm/(ha*h*yr)"), V("K", "Soil erodibility", "t*ha*h/(ha*MJ*mm)"), V("LS", "Slope length-steepness factor", "1"), V("Cc", "Cover-management factor", "1", latex=r"C", min=0, max=1),
+                   V("Pp", "Support practice factor", "1", latex=r"P", min=0, max=1), V("A", "Average annual soil loss", "t/(ha*yr)")],
+        equations=["A = R*K*LS*Cc*Pp"], outputs=["A"], tags=["erosion", "soil loss", "conservation", "usle", "rusle", "catchment"], assumptions=["Sheet and rill erosion only; long-term average"], references=["Wischmeier & Smith (1978), USDA Handbook 537"],
+        example={"R": "3000 MJ*mm/(ha*h*yr)", "K": "0.03 t*ha*h/(ha*MJ*mm)", "LS": "1.8", "Cc": "0.25", "Pp": "0.6"}),
+    Calculation(
+        id="agricultural.structures.janssen_silo_pressure", name="Janssen silo pressure",
+        disciplines=["agricultural", "civil", "mining"], subdisciplines=["Agricultural Structures Engineering", "Structural Engineering"],
+        description="Vertical and horizontal pressure of stored grain at depth in a circular silo, accounting for wall friction.",
+        variables=[V("gm", "Bulk unit weight", "kN/m^3", latex=r"\gamma"), V("Ds", "Silo diameter", "m", latex=r"D"), V("mu", "Wall friction coefficient", "1", latex=r"\mu'"), V("Kj", "Lateral pressure ratio", "1", latex=r"K"),
+                   V("z", "Depth below surface", "m"), V("Rh", "Hydraulic radius", "m", latex=r"R"), V("pv", "Vertical pressure", "kPa", latex=r"p_v"), V("ph", "Horizontal (wall) pressure", "kPa", latex=r"p_h")],
+        equations=[("Hydraulic radius", "Rh = Ds/4"), ("Vertical pressure", "pv = gm*Rh/(mu*Kj)*(1 - exp(-mu*Kj*z/Rh))"), ("Wall pressure", "ph = Kj*pv")], outputs=["Rh", "pv", "ph"],
+        tags=["silo", "grain", "bin", "bulk solids", "wall pressure", "janssen"], assumptions=["Static filling load; discharge overpressure factors (EN 1991-4) must be applied for design"], references=["Janssen (1895); EN 1991-4"],
+        example={"gm": "7.8 kN/m^3", "Ds": "6 m", "mu": "0.4", "Kj": "0.5", "z": "15 m"}),
+    Calculation(
+        id="agricultural.bioengineering.biogas_energy", name="Anaerobic digester biogas and energy",
+        disciplines=["agricultural", "energy", "environmental"], subdisciplines=["Bioengineering", "Hydrogen Energy"],
+        description="Methane and biogas production from volatile-solids loading, and the thermal and electrical power from a CHP unit.",
+        variables=[V("VS", "Volatile solids loaded", "kg/day"), V("Ym", "Methane yield", "m^3/kg", latex=r"Y_{CH_4}"), V("fm", "Methane fraction of biogas", "%", latex=r"f_{CH_4}", min=1, max=100),
+                   C("LHVm", "Methane lower heating value", 35.8, "MJ/m^3", latex=r"LHV"), V("ec", "CHP electrical efficiency", "%", latex=r"\eta_e", min=1, max=100), V("Vm", "Methane production", "m^3/day", latex=r"V_{CH_4}"),
+                   V("Vb", "Biogas production", "m^3/day", latex=r"V_{bg}"), V("Pth", "Fuel power in methane", "kW", latex=r"P_{th}"), V("Pe", "Electrical power", "kW", latex=r"P_e")],
+        equations=[("Methane", "Vm = VS*Ym"), ("Biogas", "Vb = Vm/fm"), ("Fuel power", "Pth = Vm*LHVm"), ("Electric power", "Pe = ec*Pth")], outputs=["Vm", "Vb", "Pth", "Pe"], tags=["biogas", "digester", "anaerobic digestion", "chp", "bioenergy", "manure"],
+        assumptions=["Methane volume at standard conditions; steady loading"], references=["Deublein & Steinhauser, Biogas from Waste and Renewable Resources"], example={"VS": "500 kg/day", "Ym": "0.3 m^3/kg", "fm": "60 %", "ec": "35 %"}),
+]

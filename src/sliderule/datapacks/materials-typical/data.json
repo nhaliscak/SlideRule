@@ -1,0 +1,222 @@
+{
+ "records": [
+  {
+   "id": "steel-carbon-structural",
+   "name": "Structural carbon steel (generic)",
+   "category": "steel",
+   "designation": "",
+   "condition": "room temperature",
+   "note": "Generic values for hand estimates, from open sources; no grade-specific strengths (A36, A992, S355 ...) because no open source for them has been entered yet.",
+   "properties": {
+    "density": {
+     "value": 7860,
+     "unit": "kg/m^3",
+     "basis": "typical",
+     "source": "nistir7401",
+     "at": {
+      "temperature": "23 degC"
+     },
+     "note": "'Commonly reported as 7860 kg/m3 at 23 degC' (section 3.1.2, page 7)"
+    },
+    "youngs_modulus": {
+     "value": 199.9,
+     "unit": "GPa",
+     "basis": "design",
+     "source": "wydot",
+     "note": "29,000,000 psi, 'for all grades of structural steel' (page 1-4): 199.9 GPa"
+    },
+    "poisson_ratio": {
+     "value": 0.265,
+     "unit": "1",
+     "basis": "typical",
+     "source": "nbs-rp1742",
+     "low": 0.256,
+     "high": 0.271,
+     "note": "mean of six specimens of structural low-carbon steel to ASTM A7-42 (3/8 in plate and 1/2 in angle), measured in 1946: 0.256 to 0.271 (low and high); fully killed carbon steel plate averages 0.271 (18 specimens, 0.263 to 0.279). Modern grades such as A36 and A992 were not tested"
+    },
+    "thermal_expansion": {
+     "value": 1.17e-05,
+     "unit": "1/K",
+     "basis": "design",
+     "source": "wydot",
+     "note": "6.5e-6 per degF as printed (page 1-4), the value the manual prescribes for steel"
+    },
+    "thermal_conductivity": {
+     "value": 48.8,
+     "unit": "W/(m*K)",
+     "basis": "typical",
+     "source": "nistir7401",
+     "at": {
+      "temperature": "26.85 degC"
+     },
+     "note": "Table 5, mild steel at 26.85 degC (page 8); it falls to 29.7 at 716.85 degC"
+    },
+    "specific_heat": {
+     "value": 435,
+     "unit": "J/(kg*K)",
+     "basis": "typical",
+     "source": "nistir7401",
+     "at": {
+      "temperature": "26.85 degC"
+     },
+     "note": "Table 5, mild steel at 26.85 degC (page 8); it rises to 871 at 716.85 degC"
+    }
+   }
+  },
+  {
+   "id": "aluminium-6061-t6",
+   "name": "Aluminium alloy 6061-T6",
+   "category": "aluminium",
+   "designation": "6061",
+   "condition": "T6",
+   "note": "Typical values with the printed minimums as `low`. A 1972 handbook compiled largely from MIL-HDBK-5A, which is superseded (MMPDS replaced it): the minimums shown as `low` are that edition's A-basis or specification values, not current allowables.",
+   "properties": {
+    "density": {
+     "value": 2700,
+     "unit": "kg/m^3",
+     "basis": "typical",
+     "source": "nasa-al6061",
+     "at": {
+      "temperature": "20 degC"
+     },
+     "note": "2.70 g/cm3 at 20 degC (0.098 lb/in3 at 68 degF), section 9.1, page 75"
+    },
+    "youngs_modulus": {
+     "value": 68.9,
+     "unit": "GPa",
+     "basis": "typical",
+     "source": "nasa-al6061",
+     "low": 68.3,
+     "note": "typical E 10.0 x 10^3 ksi (section 7.222, page 39); `low` is the design value 9.9 x 10^3 ksi (section 7.221)"
+    },
+    "poisson_ratio": {
+     "value": 0.33,
+     "unit": "1",
+     "basis": "typical",
+     "source": "nasa-al6061",
+     "note": "section 7.21, page 39"
+    },
+    "thermal_expansion": {
+     "value": 2.34e-05,
+     "unit": "1/K",
+     "basis": "typical",
+     "source": "nasa-al6061",
+     "note": "mean 20 to 100 degC, 23.4 x 10^-6 per degC (section 9.22, page 75)"
+    },
+    "thermal_conductivity": {
+     "value": 167.0,
+     "unit": "W/(m*K)",
+     "basis": "typical",
+     "source": "nasa-al6061",
+     "low": 154,
+     "at": {
+      "temperature": "25 degC"
+     },
+     "note": "T6 temper 0.40 cal/(cm s degC) at 25 degC (section 9.21, page 75, and the abstract, page iv); the NIST cryogenic fit in the nist-cryo pack gives 154 at 293 K, kept as `low`"
+    },
+    "specific_heat": {
+     "value": 962.0,
+     "unit": "J/(kg*K)",
+     "basis": "typical",
+     "source": "nasa-al6061",
+     "at": {
+      "temperature": "100 degC"
+     },
+     "note": "0.23 cal/(g degC) at 100 degC (section 9.23, page 75)"
+    },
+    "yield_strength": {
+     "value": 275.8,
+     "unit": "MPa",
+     "basis": "typical",
+     "source": "nasa-al6061",
+     "low": 241.3,
+     "note": "typical tensile yield 40.0 ksi (abstract, page iv); `low` is the A-basis minimum 35 ksi for sheet, plate, bar, rod and shapes in T6 (Table 7.4111, page 43)"
+    },
+    "ultimate_strength": {
+     "value": 310.3,
+     "unit": "MPa",
+     "basis": "typical",
+     "source": "nasa-al6061",
+     "low": 289.6,
+     "note": "typical ultimate tensile strength 45.0 ksi (abstract, page iv); `low` is the A-basis minimum 42 ksi (Table 7.4111, page 43)"
+    }
+   }
+  },
+  {
+   "id": "titanium-ti6al4v-annealed",
+   "name": "Titanium Ti-6Al-4V (Grade 5), annealed",
+   "category": "titanium",
+   "designation": "Ti-6Al-4V",
+   "condition": "annealed",
+   "note": "Annealed typical values with the printed minimums as `low`. A 1972 handbook compiled largely from MIL-HDBK-5A, which is superseded (MMPDS replaced it): the minimums shown as `low` are that edition's A-basis or specification values, not current allowables.",
+   "properties": {
+    "density": {
+     "value": 4424,
+     "unit": "kg/m^3",
+     "basis": "typical",
+     "source": "nasa-ti64",
+     "at": {
+      "temperature": "20 degC"
+     },
+     "note": "4.424 g/cm3 at 20 degC (abstract, page iv); 0.160 lb/in3 (section 9.1, page 81)"
+    },
+    "youngs_modulus": {
+     "value": 113.8,
+     "unit": "GPa",
+     "basis": "typical",
+     "source": "nasa-ti64",
+     "low": 110.3,
+     "note": "typical E 16.5 x 10^3 ksi in tension (abstract, page iv); `low` is the design value 16.0 x 10^3 ksi for all forms (section 7.221, page 39)"
+    },
+    "poisson_ratio": {
+     "value": 0.342,
+     "unit": "1",
+     "basis": "typical",
+     "source": "nasa-ti64",
+     "note": "section 7.21, page 39"
+    },
+    "thermal_expansion": {
+     "value": 8.8e-06,
+     "unit": "1/K",
+     "basis": "typical",
+     "source": "nasa-ti64",
+     "note": "mean 0 to 100 degC, 8.8 x 10^-6 per degC (abstract, page iv)"
+    },
+    "thermal_conductivity": {
+     "value": 7.36,
+     "unit": "W/(m*K)",
+     "basis": "computed",
+     "source": "nist-cryo-ti",
+     "note": "NIST's log10 polynomial fit evaluated at 293 K; `rel_uncertainty` is NIST's stated fit error against its own data. The 1972 abstract prints 0.012 with garbled units, so it is not used",
+     "rel_uncertainty": 0.02
+    },
+    "specific_heat": {
+     "value": 565.0,
+     "unit": "J/(kg*K)",
+     "basis": "typical",
+     "source": "nasa-ti64",
+     "at": {
+      "temperature": "20 degC"
+     },
+     "note": "0.135 cal/(g degC) at 20 degC as printed (abstract, page iv); an old value, check it against a current source"
+    },
+    "yield_strength": {
+     "value": 882.5,
+     "unit": "MPa",
+     "basis": "typical",
+     "source": "nasa-ti64",
+     "low": 827.4,
+     "note": "typical annealed tensile yield 128 ksi (abstract, page iv); `low` is the specification minimum 120 ksi for annealed plate 0.1876 to 4.000 in (Table 7.4111, page 42); the A-basis for sheet up to 0.1875 in is 126 ksi"
+    },
+    "ultimate_strength": {
+     "value": 951.5,
+     "unit": "MPa",
+     "basis": "typical",
+     "source": "nasa-ti64",
+     "low": 896.3,
+     "note": "typical annealed ultimate strength 138 ksi (abstract, page iv); `low` is the specification minimum 130 ksi for annealed plate 0.1876 to 4.000 in (Table 7.4111, page 42); the A-basis for sheet up to 0.1875 in is 134 ksi"
+    }
+   }
+  }
+ ]
+}

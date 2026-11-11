@@ -1,0 +1,48 @@
+{
+  "id": "materials-typical",
+  "version": "0.2.1",
+  "title": "Typical engineering materials (starter)",
+  "kind": "materials",
+  "licence": "Values read from NASA contractor reports (NASA CR-123772 and CR-123775, 1972), NIST reports (NISTIR 7401; National Bureau of Standards RP 1742, 1946) and NIST's cryogenic fits (all published without a copyright notice by US government sources, distributed through NASA's and NIST's public servers) and from one state agency manual (Wyoming DOT) for two code-prescribed steel values; the numbers are physical facts compiled and converted to SI by the SlideRule authors, released under the MIT licence of this repository",
+  "status": "Starter pack: typical values with the printed minimums as the low end, NOT design values. The aluminium and titanium sources are 1972 and rest on a superseded handbook; a value without an open source would read 'citation needed' (none at present)",
+  "design_use": false,
+  "sources": [
+    {
+      "id": "nasa-al6061",
+      "ref": "R. F. Muraca and J. S. Whittick, Materials Data Handbook: Aluminum Alloy 6061 (2nd edition), NASA CR-123772, Western Applied Research & Development for NASA Marshall Space Flight Center, May 1972; page numbers in the notes are the printed ones",
+      "url": "https://ntrs.nasa.gov/citations/19720022808",
+      "accessed": "2026-11-06"
+    },
+    {
+      "id": "nasa-ti64",
+      "ref": "R. F. Muraca and J. S. Whittick, Materials Data Handbook: Titanium 6Al-4V (2nd edition), NASA CR-123775, Western Applied Research & Development for NASA Marshall Space Flight Center, May 1972; page numbers in the notes are the printed ones",
+      "url": "https://ntrs.nasa.gov/citations/19720022814",
+      "accessed": "2026-11-06"
+    },
+    {
+      "id": "nist-cryo-ti",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: Ti-6Al-4V, log10 polynomial fit for thermal conductivity, evaluated at 293 K by SlideRule (see the nist-cryo pack for NIST's notice)",
+      "url": "https://trc.nist.gov/cryogenics/materials/Ti6Al4V/Ti6Al4V_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "nistir7401",
+      "ref": "D. P. Bentz and K. R. Prasad, Thermal Performance of Fire Resistive Materials I. Characterization with Respect to Thermal Performance Models, NISTIR 7401, National Institute of Standards and Technology, February 2007, section 3.1.2 and Table 5 (page 8); the conductivity and heat capacity are values collected for NIST's World Trade Center investigation",
+      "url": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=860705",
+      "accessed": "2026-11-06"
+    },
+    {
+      "id": "wydot",
+      "ref": "Wyoming Department of Transportation, Bridge Design Manual, Chapter 1, General Design Information (revised January 2022), page 1-4: coefficient of thermal expansion for steel and the modulus of elasticity for all grades of structural steel (design values prescribed by the manual)",
+      "url": "https://dot.state.wy.us/files/live/sites/wydot/files/shared/Bridge/Bridge%20Design%20Manual/Chapter%201%20-%20General%20Design%20Information_revised%20January%202022%20final.pdf",
+      "accessed": "2026-11-06"
+    },
+    {
+      "id": "nbs-rp1742",
+      "ref": "A. H. Stang, M. Greenspan and S. B. Newman, Poisson's Ratio of Some Structural Alloys for Large Strains, Journal of Research of the National Bureau of Standards 37, 211-221 (October 1946), Research Paper RP 1742, Table 2 (page 216)",
+      "url": "https://nvlpubs.nist.gov/nistpubs/jres/37/jresv37n4p211_A1b.pdf",
+      "accessed": "2026-11-07"
+    }
+  ],
+  "checksum": "f9937c513944f8c1a31524274045db8a5c33bdf5bee23f1aaeb1e4c6a16f1bed"
+}

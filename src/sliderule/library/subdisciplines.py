@@ -1,0 +1,185 @@
+"""Sub-discipline tags (and a few extra discipline cross-listings) for the first-generation calculations."""
+
+# id -> ([sub-disciplines], [extra disciplines])
+RETROFIT: dict[str, tuple[list[str], list[str]]] = {
+    # civil
+    "civil.beam.simply_supported_udl": (["Structural Engineering"], []),
+    "civil.beam.cantilever_point": (["Structural Engineering", "Aeronautical Engineering"], []),
+    "civil.column.euler_buckling": (["Structural Engineering", "Aeronautical Engineering"], []),
+    "civil.hydraulics.manning_open_channel": (["Hydraulic Engineering", "Water Resources Engineering", "River Engineering"], []),
+    "civil.hydrology.rational_method": (["Water Resources Engineering", "Municipal / Urban Engineering", "Environmental Engineering"], []),
+    "civil.geotech.terzaghi_strip_footing": (["Geotechnical Engineering", "Structural Engineering"], []),
+    "civil.hydraulics.hydrostatic_gate_force": (["Hydraulic Engineering", "Fluid Mechanics"], []),
+    # mechanical
+    "mechanical.materials.axial_member": (["Structural Engineering", "Biomechanics"], []),
+    "mechanical.shafts.solid_torsion": (["Aeronautical Engineering", "Vehicle Engineering"], []),
+    "mechanical.materials.thermal_expansion": (["Thermal Engineering", "Structural Engineering"], []),
+    "mechanical.power.torque_speed": (["Electrical Machines and Drives", "Vehicle Engineering"], []),
+    "mechanical.springs.helical_compression": (["Vehicle Engineering"], []),
+    "mechanical.gears.simple_gear_pair": (["Automotive Engineering", "Vehicle Engineering", "Mechatronics"], ["electromechanical"]),
+    "mechanical.fasteners.bolt_torque": (["Industrial Plant Engineering", "Automotive Engineering"], []),
+    "mechanical.fluid_power.hydraulic_cylinder": (["Fluid Mechanics", "Industrial Plant Engineering", "Mechatronics"], ["electromechanical"]),
+    "mechanical.pumps.hydraulic_power": (["Fluid Mechanics", "Industrial Plant Engineering", "Hydraulic Engineering", "Process Engineering", "Production Engineering"], []),
+    "mechanical.heat.conduction_plane_wall": (["Thermal Engineering", "Process Engineering", "Architectural Engineering"], []),
+    "mechanical.heat.convection_cooling": (["Thermal Engineering", "Process Engineering", "Architectural Engineering"], []),
+    "mechanical.thermo.ideal_gas_law": (["Thermal Engineering", "Process Engineering", "Reservoir Engineering", "Pollution Control", "Aerodynamics"], []),
+    "mechanical.thermo.carnot_efficiency": (["Thermal Engineering", "Power Plant Engineering", "Energy Engineering"], ["energy"]),
+    "mechanical.thermo.sensible_heat": (["Thermal Engineering", "Process Engineering", "Energy Engineering"], []),
+    # chemical
+    "chemical.fluids.pipe_flow_darcy_weisbach": (["Fluid Mechanics", "Process Engineering", "Hydraulic Engineering", "Production Engineering", "Petrochemical Engineering"], []),
+    "chemical.fluids.hagen_poiseuille": (["Fluid Mechanics", "Process Engineering", "Medical Device Engineering"], []),
+    "chemical.fluids.bernoulli": (["Fluid Mechanics", "Hydraulic Engineering", "Aerodynamics"], []),
+    "chemical.heat.lmtd_heat_exchanger": (["Process Engineering", "Thermal Engineering", "Refinery Engineering", "Power Plant Engineering"], []),
+    "chemical.kinetics.arrhenius": (["Process Engineering", "Molecular Engineering", "Environmental Chemical Engineering"], []),
+    "chemical.reactors.first_order_cstr_pfr": (["Process Engineering", "Petrochemical Engineering"], []),
+    "chemical.thermo.ideal_gas_density": (["Process Engineering", "Pollution Control", "Reservoir Engineering"], []),
+    "chemical.mass_balance.stream_mixing": (["Process Engineering", "Pollution Control", "Water and Wastewater Treatment", "Environmental Chemical Engineering"], []),
+    # electrical
+    "electrical.dc.ohms_law_power": (["Electronics Engineering", "Power Systems Engineering"], []),
+    "electrical.dc.resistor_networks": (["Electronics Engineering"], []),
+    "electrical.dc.voltage_divider": (["Electronics Engineering", "Instrumentation Engineering"], []),
+    "electrical.dc.rc_charging": (["Electronics Engineering", "Control Systems Engineering"], []),
+    "electrical.ac.series_rlc": (["Electronics Engineering", "Power Systems Engineering", "Signal Processing", "RF and Microwave Engineering"], []),
+    "electrical.power.three_phase": (["Power Systems Engineering", "Electrical Machines and Drives"], []),
+    "electrical.wiring.cable_voltage_drop": (["Power Systems Engineering", "Architectural Engineering"], []),
+    # petroleum
+    "petroleum.reservoir.radial_darcy_inflow": (["Reservoir Engineering", "Production Engineering"], []),
+    "petroleum.production.productivity_index": (["Production Engineering", "Reservoir Engineering"], []),
+    "petroleum.drilling.wellbore_hydrostatic": (["Drilling Engineering"], []),
+    "petroleum.reservoir.volumetric_ooip": (["Reservoir Engineering", "Petroleum Geology"], []),
+    "petroleum.pvt.gas_fvf": (["Reservoir Engineering", "Production Engineering"], []),
+    # aerospace
+    "aerospace.aerodynamics.lift_drag": (["Aerodynamics", "Aeronautical Engineering", "Aerospace Engineering"], []),
+    "aerospace.propulsion.rocket_equation": (["Astronautical Engineering", "Propulsion Engineering", "Space Systems Engineering", "Space Propulsion"], ["space"]),
+    "aerospace.atmosphere.isa_troposphere": (["Aeronautical Engineering", "Aerodynamics", "Avionics Engineering"], []),
+    "aerospace.orbits.circular_orbit": (["Astronautical Engineering", "Space Systems Engineering", "Satellite Systems"], ["space"]),
+    "aerospace.aerodynamics.mach_number": (["Aerodynamics", "Aeronautical Engineering", "Avionics Engineering"], []),
+    # environmental
+    "environmental.water_quality.streeter_phelps": (["Water and Wastewater Treatment", "Sanitary Engineering", "Water Resources Engineering"], []),
+    "environmental.air.gaussian_plume_ground": (["Pollution Control", "Environmental Impact Assessment"], []),
+    "environmental.air.ppm_to_mass_concentration": (["Pollution Control", "Environmental Impact Assessment"], []),
+    "environmental.fate.first_order_decay": (["Pollution Control", "Environmental Chemical Engineering", "Nuclear Waste Management"], []),
+    # architectural
+    "architectural.envelope.wall_u_value": (["Architectural Engineering", "Thermal Engineering"], []),
+    "architectural.acoustics.sabine_rt60": (["Architectural Engineering", "Acoustical Engineering"], []),
+    "architectural.lighting.lumen_method": (["Architectural Engineering"], []),
+    "architectural.ventilation.air_change_heat_load": (["Architectural Engineering", "Thermal Engineering"], []),
+    "architectural.circulation.stair_blondel": (["Architectural Engineering"], []),
+    # industrial
+    "industrial.inventory.eoq": (["Supply Chain Engineering", "Logistics Engineering", "Operations Research"], []),
+    "industrial.flow.littles_law": (["Operations Research", "Manufacturing Engineering", "Systems Engineering", "Network Engineering"], []),
+    "industrial.lean.oee": (["Manufacturing Engineering", "Quality Control"], []),
+    "industrial.lean.takt_time": (["Manufacturing Engineering", "Operations Research"], []),
+    "industrial.quality.process_capability": (["Quality Control", "Manufacturing Engineering"], []),
+    "industrial.finance.break_even": (["Operations Research", "Manufacturing Engineering"], []),
+    "industrial.queueing.mm1": (["Operations Research", "Systems Engineering", "Teletraffic Engineering"], []),
+    # systems
+    "systems.reliability.exponential_availability": (["Systems Engineering", "Verification and Validation"], []),
+    "systems.reliability.series_parallel": (["Systems Engineering", "Verification and Validation", "Integration Engineering"], []),
+    "systems.control.second_order_step": (["Control Systems Engineering", "Control Engineering", "Systems Engineering"], []),
+    "systems.control.ziegler_nichols_pid": (["Control Systems Engineering", "Control Engineering", "Mechatronics"], ["electromechanical"]),
+    "systems.communications.shannon_hartley": (["Telecommunications Engineering", "Wireless Communication", "Satellite Communication"], ["computer"]),
+    # sub-disciplines that share a name with a top-level discipline
+    "civil.sanitary.chick_watson_disinfection": (["Environmental Engineering"], []),
+    "civil.groundwater.thiem_well": (["Environmental Engineering"], []),
+    "aerospace.aeronautical.stall_speed": (["Aerospace Engineering"], ["mechanical"]),
+    "aerospace.propulsion.rocket_thrust": (["Aerospace Engineering"], ["mechanical"]),
+    "nuclear.reactor.four_factor_reactivity": (["Nuclear Engineering"], ["chemical"]),
+    "nuclear.fuel.enrichment_swu": (["Nuclear Engineering"], ["chemical"]),
+    "nuclear.fuel.burnup": (["Nuclear Engineering"], ["chemical"]),
+}
+
+
+# Existing calculations that are also textbook physics or chemistry: listed under the Physics / Chemistry sub-disciplines too
+# (the owning discipline is added automatically), so they are found there instead of being duplicated.
+_MECH = "Classical Mechanics"
+_THERMO = "Thermodynamics and Statistical Physics"
+_WAVES = "Waves and Acoustics"
+_EM = "Electricity and Magnetism"
+_MODERN = "Modern Physics"
+_GRAV = "Gravitation and Astrophysics"
+RETROFIT.update({
+    "mechanical.sports.projectile_range": (["Classical Mechanics"], []),
+    "mechanical.dynamics.projectile_with_drag_range": (["Classical Mechanics"], []),
+    "mechanical.dynamics.pendulum_large_amplitude_period": (["Classical Mechanics"], []),
+    "mechanical.dynamics.damped_oscillator_response": (["Classical Mechanics"], []),
+    "chemical.fluids.bernoulli": (["Classical Mechanics"], []),
+    "civil.hydraulics.hydrostatic_absolute_gauge": (["Classical Mechanics"], []),
+    "mechanical.thermo.ideal_gas_law": ([_THERMO, "General Chemistry"], []),
+    "chemical.thermo.ideal_gas_density": (["General Chemistry"], []),
+    "mechanical.thermo.carnot_efficiency": ([_THERMO], []),
+    "mechanical.thermo.sensible_heat": ([_THERMO, "Physical Chemistry"], []),
+    "mechanical.materials.thermal_expansion": ([_THERMO], []),
+    "mechanical.heat.convection_cooling": ([_THERMO], []),
+    "mechanical.acoustics.spl_from_pressure": ([_WAVES], []),
+    "civil.coastal.deep_water_wave": ([_WAVES], []),
+    "mechanical.acoustics.damped_string_displacement": ([_WAVES], []),
+    "electrical.dc.ohms_law_power": ([_EM], []),
+    "electrical.dc.resistor_networks": ([_EM], []),
+    "electrical.dc.rc_charging": ([_EM], []),
+    "electrical.ac.series_rlc": ([_EM], []),
+    "electrical.photonics.photon_energy_responsivity": ([_MODERN, "Optics"], []),
+    "electrical.photonics.beer_lambert": (["Analytical Chemistry", "Optics", "Atomic Structure and Spectroscopy"], []),
+    "nuclear.waste.radioactive_decay": ([_MODERN], []),
+    "aerospace.orbits.circular_orbit": ([_GRAV], []),
+    "space.satellite.geostationary_orbit": ([_GRAV], []),
+    "space.astronautical.hohmann_transfer": ([_GRAV], []),
+    "space.planetary.escape_velocity": ([_GRAV], []),
+    "environmental.fate.first_order_decay": (["Physical Chemistry"], []),
+    "chemical.kinetics.arrhenius": (["Physical Chemistry"], []),
+    "chemical.envchem.henrys_law": (["General Chemistry", "Physical Chemistry"], []),
+    "chemical.envchem.langmuir_adsorption": (["Physical Chemistry"], []),
+    "chemical.electrochemical.nernst_cell_potential": (["Physical Chemistry", "Analytical Chemistry"], []),
+    "chemical.electrochemical.faraday_electrolysis": (["Physical Chemistry"], []),
+    "chemical.molecular.lennard_jones": (["Physical Chemistry"], []),
+})
+
+# Stage 3 of the physics/chemistry work: existing calculations that belong under the new sub-disciplines.
+RETROFIT.update({
+    # quantum and statistical mechanics
+    "physics.modern.particle_in_box": (["Quantum Mechanics"], []),
+    "physics.modern.quantum_harmonic_oscillator": (["Quantum Mechanics"], []),
+    "physics.modern.quantum_tunnelling": (["Quantum Mechanics"], []),
+    "physics.modern.de_broglie_uncertainty": (["Quantum Mechanics"], []),
+    "physics.modern.hydrogen_ground_state": (["Quantum Mechanics"], []),
+    "physics.modern.bohr_hydrogen": (["Quantum Mechanics"], []),
+    "physics.modern.hydrogen_quantum_numbers": (["Quantum Mechanics"], []),
+    "physics.modern.zeeman_nmr_esr": (["Quantum Mechanics"], []),
+    "physics.thermo.two_level_system": (["Statistical Mechanics", "Quantum Mechanics"], []),
+    "physics.thermo.quantum_statistics_occupation": (["Statistical Mechanics", "Quantum Mechanics"], []),
+    "physics.thermo.fermi_gas_metal": (["Statistical Mechanics"], []),
+    "physics.thermo.sackur_tetrode": (["Statistical Mechanics"], []),
+    "physics.thermo.kinetic_theory_gas": (["Statistical Mechanics"], []),
+    "physics.thermo.blackbody_radiation": (["Statistical Mechanics"], []),
+    "physics.modern.bose_einstein_condensation": (["Statistical Mechanics"], []),
+    "physics.solid.curie_paramagnetism": (["Statistical Mechanics"], []),
+    "chemistry.physical.partition_functions": (["Statistical Mechanics"], []),
+    "chemical.molecular.lennard_jones": (["Statistical Mechanics"], []),
+    "chemical.molecular.gas_molecular_speeds": (["Statistical Mechanics"], []),
+    "nanotech.nanomedicine.stokes_einstein_transport": (["Statistical Mechanics"], []),
+    "quantum.sensing.nv_magnetometer": (["Quantum Mechanics"], []),
+    # analytical mechanics
+    "mechanical.dynamics.pendulum_large_amplitude_period": (["Analytical Mechanics"], []),
+    "physics.mechanics.gyroscope_precession": (["Analytical Mechanics"], []),
+    "physics.mechanics.driven_damped_oscillator": (["Analytical Mechanics"], []),
+    "physics.mechanics.moments_of_inertia": (["Analytical Mechanics"], []),
+    # plasma, astrophysics
+    "physics.em.plasma_parameters": (["Plasma Physics"], []),
+    "physics.nuclear.fusion_coulomb_gamow": (["Plasma Physics"], []),
+    "metamaterials.design.plasma_frequency_srr": (["Plasma Physics"], []),
+    "space.stellar.lane_emden_polytrope": (["Gravitation and Astrophysics"], []),
+    # chemistry
+    "biomedical.biomolecular.michaelis_menten": (["Biochemistry", "Chemical Kinetics"], []),
+    "biomedical.neural.nernst_goldman": (["Biochemistry", "Electrochemistry"], []),
+    "chemical.biochemical.monod_chemostat": (["Biochemistry"], []),
+    "biomedical.pharma.one_compartment_pk": (["Biochemistry"], []),
+    "chemical.polymer.carothers_flory_fox": (["Polymer Chemistry"], []),
+    "materials.polymers.rubber_and_maxwell": (["Polymer Chemistry"], []),
+    "chemical.envchem.langmuir_adsorption": (["Colloid and Surface Chemistry"], []),
+    "mechanical.fluids.stokes_settling": (["Colloid and Surface Chemistry"], []),
+    "materials.nano.scherrer_crystallite_size": (["Solid-State and Inorganic Chemistry"], []),
+    "climate.geoengineering.forcing_temperature": (["Atmospheric Chemistry"], []),
+    "climate.adaptation.clausius_clapeyron_rainfall": (["Atmospheric Chemistry"], []),
+    "chemical.envchem.henrys_law": (["Atmospheric Chemistry"], []),
+    "environmental.fate.first_order_decay": (["Atmospheric Chemistry"], []),
+})

@@ -1,0 +1,21 @@
+# Pairs the duplicate check flags that a person has looked at and kept (id_a id_b  # reason). The check is a net, not a verdict:
+# sibling calculations built from one template (conduction geometries, converters, shallow-water cases) share equation text legitimately.
+
+electrical.dc.resistor_networks systems.reliability.series_parallel  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+electrical.power_electronics.buck_converter electrical.power_electronics.boost_converter  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+civil.beam.simply_supported_uniform_deflection_profile civil.beam.cantilever_tip_load_deflection_profile  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+mechanical.fluids.channel_pressure_driven_velocity_profile mechanical.fluids.pipe_laminar_velocity_profile  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+mechanical.heat.slab_transient_convective_cooling mechanical.heat.rod_with_point_heater_transient  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+mechanical.heat.slab_transient_convective_cooling mechanical.heat.slab_transient_exact_series  # same outputs and ≥ 80 % of the same variable names; distinct geometry, topology or regime (reviewed 2026-10-30)
+mechanical.heat.rectangular_plate_steady_field mechanical.heat.square_bar_internal_generation  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+mechanical.heat.rectangular_plate_steady_field electrical.rf.potential_in_rectangular_trough  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+mechanical.heat.rectangular_plate_steady_field mechanical.heat.l_shaped_section_steady_conduction  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+mechanical.heat.square_bar_internal_generation mechanical.heat.box_steady_generation_3d  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+mechanical.heat.square_bar_internal_generation mechanical.heat.l_shaped_section_steady_conduction  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+electrical.rf.potential_in_rectangular_trough mechanical.heat.l_shaped_section_steady_conduction  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+mechanical.heat.plate_transient_2d_edge_cooling mechanical.heat.rod_with_point_heater_transient  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+mechanical.heat.plate_transient_2d_edge_cooling mechanical.heat.box_quench_3d  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+mechanical.heat.rod_with_point_heater_transient mechanical.heat.box_quench_3d  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+civil.hydraulics.dam_break_shallow_water civil.hydraulics.dam_break_dry_bed  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+mechanical.heat.cylinder_generation_radial_profile mechanical.heat.sphere_generation_radial_profile  # equations share ≥ 80 % of their tokens; distinct geometry, topology or regime (reviewed 2026-10-30)
+mechanical.heat.cylinder_transient_bessel_series mechanical.heat.sphere_transient_series  # same outputs and ≥ 80 % of the same variable names; distinct geometry, topology or regime (reviewed 2026-10-30)

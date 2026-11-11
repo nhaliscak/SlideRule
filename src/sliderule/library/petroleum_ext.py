@@ -1,0 +1,76 @@
+from ..core import C, Calculation, V
+from ._common import g0
+
+CALCS = [
+    Calculation(
+        id="petroleum.reservoir.gas_material_balance", name="Gas reservoir material balance (p/z)",
+        disciplines=["petroleum"], subdisciplines=["Reservoir Engineering", "Production Engineering"],
+        description="Original gas in place from the straight-line p/z plot: p/z = (pᵢ/zᵢ)(1 − Gp/G).",
+        variables=[V("pi", "Initial reservoir pressure", "psi", latex=r"p_i"), V("zi", "Initial z-factor", "1", latex=r"z_i"), V("p", "Current reservoir pressure", "psi"), V("z", "Current z-factor", "1"),
+                   V("Gp", "Cumulative gas produced", "Bcf", latex=r"G_p"), V("G", "Original gas in place", "Bcf")],
+        equations=["p/z = pi/zi*(1 - Gp/G)"], outputs=["G"], tags=["gas", "material balance", "p/z", "gas in place", "depletion", "reserves"], assumptions=["Volumetric (no water influx), single tank, constant temperature"],
+        references=["Dake, Fundamentals of Reservoir Engineering, Ch. 3"], example={"pi": "4000 psi", "zi": "0.85", "p": "3000 psi", "z": "0.86", "Gp": "50 Bcf"}),
+    Calculation(
+        id="petroleum.production.arps_decline", name="Arps decline curve (exponential and hyperbolic)",
+        disciplines=["petroleum"], subdisciplines=["Production Engineering", "Reservoir Engineering"],
+        description="Rate after time t for exponential and hyperbolic decline and the cumulative production of the exponential case.",
+        variables=[V("qi", "Initial rate", "bpd", latex=r"q_i"), V("Dn", "Initial nominal decline rate", "1/yr", latex=r"D_i"), V("bx", "Hyperbolic exponent b", "1", latex=r"b", min=0.01, max=2), V("t", "Time", "yr"),
+                   V("qe", "Rate, exponential decline", "bpd", latex=r"q_{exp}"), V("qh", "Rate, hyperbolic decline", "bpd", latex=r"q_{hyp}"), V("Np", "Cumulative production, exponential", "Mbbl", latex=r"N_p")],
+        equations=[("Exponential decline", "qe = qi*exp(-Dn*t)"), ("Hyperbolic decline", "qh = qi/(1 + bx*Dn*t)^(1/bx)"), ("Cumulative (exponential)", "Np = (qi - qe)/Dn")], outputs=["qe", "qh", "Np"],
+        tags=["decline", "arps", "forecast", "eur", "well performance", "shale"], assumptions=["Boundary-dominated flow; b = 0 limit is the exponential case"], references=["Arps (1945), Trans. AIME 160"], example={"qi": "1000 bpd", "Dn": "0.3 1/yr", "bx": "0.5", "t": "2 yr"}),
+    Calculation(
+        id="petroleum.production.vogel_ipr", name="Vogel inflow performance relationship",
+        disciplines=["petroleum"], subdisciplines=["Production Engineering", "Reservoir Engineering"],
+        description="Oil rate at a flowing bottom-hole pressure for a solution-gas-drive well, calibrated from one flow test.",
+        variables=[V("pr", "Average reservoir pressure", "psi", latex=r"\bar p_r"), V("pt", "Test flowing pressure", "psi", latex=r"p_{wf,t}"), V("qt", "Test rate", "bpd", latex=r"q_t"), V("pw", "Flowing pressure of interest", "psi", latex=r"p_{wf}"),
+                   V("qmax", "Absolute open-flow potential", "bpd", latex=r"q_{max}"), V("q", "Rate at p_wf", "bpd")],
+        equations=[("Calibrate q_max", "qmax = qt/(1 - 2/10*(pt/pr) - 8/10*(pt/pr)^2)"), ("Vogel IPR", "q = qmax*(1 - 2/10*(pw/pr) - 8/10*(pw/pr)^2)")], outputs=["qmax", "q"], tags=["ipr", "inflow", "solution gas", "well test", "nodal analysis", "vogel"],
+        validity=[("pr > pt", "test flowing pressure must be below reservoir pressure"), ("pr > pw", "flowing pressure must be below reservoir pressure")], assumptions=["Saturated reservoir, no skin"], references=["Vogel (1968), JPT 20(1)"], example={"pr": "3000 psi", "pt": "2000 psi", "qt": "800 bpd", "pw": "1000 psi"}),
+    Calculation(
+        id="petroleum.drilling.equivalent_circulating_density", name="Equivalent circulating density (ECD)",
+        disciplines=["petroleum"], subdisciplines=["Drilling Engineering"],
+        description="Effective bottom-hole fluid density while circulating, from mud weight and annular friction pressure.",
+        variables=[V("rm", "Mud weight", "ppg", latex=r"\rho_m"), V("dPa", "Annular friction pressure loss", "psi", latex=r"\Delta P_a"), V("D", "True vertical depth", "ft"), g0(), V("ECD", "Equivalent circulating density", "ppg")],
+        equations=["ECD = rm + dPa/(g*D)"], outputs=["ECD"], tags=["mud", "circulation", "annulus", "pressure window", "well control", "ecd"], assumptions=["Vertical depth for the hydrostatic term; cuttings loading excluded"], references=["Bourgoyne et al., Applied Drilling Engineering, Ch. 4"], example={"rm": "10 ppg", "dPa": "250 psi", "D": "10000 ft"}),
+    Calculation(
+        id="petroleum.drilling.eaton_fracture_gradient", name="Fracture pressure and gradient (Eaton)",
+        disciplines=["petroleum", "civil"], subdisciplines=["Drilling Engineering", "Petroleum Geology"],
+        description="Formation fracture pressure and equivalent mud weight from overburden stress, pore pressure and Poisson's ratio.",
+        variables=[V("nu", "Poisson's ratio", "1", latex=r"\nu", min=0.05, max=0.49), V("Sv", "Overburden stress", "psi", latex=r"S_v"), V("pp", "Pore pressure", "psi", latex=r"p_p"), V("D", "True vertical depth", "ft"), g0(),
+                   V("Pf", "Fracture pressure", "psi", latex=r"P_f"), V("FG", "Fracture gradient (equivalent mud weight)", "ppg", latex=r"FG")],
+        equations=[("Fracture pressure", "Pf = nu/(1 - nu)*(Sv - pp) + pp"), ("Equivalent mud weight", "FG = Pf/(g*D)")], outputs=["Pf", "FG"], tags=["fracture gradient", "pore pressure", "leak-off", "casing design", "eaton", "mud window"],
+        validity=[("Sv > pp", "pore pressure should be below overburden stress")], assumptions=["Elastic, laterally constrained, uniform horizontal stress"], references=["Eaton (1969), JPT 21(10)"], example={"nu": "0.35", "Sv": "10000 psi", "pp": "4800 psi", "D": "10000 ft"}),
+    Calculation(
+        id="petroleum.drilling.buoyed_string_weight", name="Buoyancy factor and buoyed drill-string weight",
+        disciplines=["petroleum", "mechanical"], subdisciplines=["Drilling Engineering"],
+        description="Buoyancy factor for steel in mud and the effective (hook-load) weight of the string.",
+        variables=[V("rm", "Mud weight", "ppg", latex=r"\rho_m"), V("rs", "Steel density", "lbm/ft^3", latex=r"\rho_s", default=490), V("Wa", "String weight in air", "kip", latex=r"W_{air}"), V("BF", "Buoyancy factor", "1"), V("Wb", "Buoyed weight", "kip", latex=r"W_b")],
+        equations=[("Buoyancy factor", "BF = 1 - rm/rs"), ("Buoyed weight", "Wb = Wa*BF")], outputs=["BF", "Wb"], tags=["hook load", "buoyancy", "drill string", "weight on bit", "rig"], assumptions=["String filled with and surrounded by the same mud; no drag"], references=["Bourgoyne et al., Ch. 7"],
+        example={"rm": "12 ppg", "rs": "490 lbm/ft^3", "Wa": "300 kip"}),
+    Calculation(
+        id="petroleum.geology.archie_water_saturation", name="Archie water saturation and density porosity",
+        disciplines=["petroleum"], subdisciplines=["Petroleum Geology", "Reservoir Engineering"],
+        description="Porosity from a bulk-density log and water saturation from resistivity (Archie's equation); hydrocarbon saturation follows.",
+        variables=[V("rma", "Matrix density", "g/cm^3", latex=r"\rho_{ma}"), V("rb", "Bulk density (log)", "g/cm^3", latex=r"\rho_b"), V("rfl", "Fluid density", "g/cm^3", latex=r"\rho_f"), V("a", "Tortuosity factor", "1", default=1), V("m", "Cementation exponent", "1", default=2),
+                   V("n", "Saturation exponent", "1", default=2), V("Rw", "Formation-water resistivity", "ohm*m", latex=r"R_w"), V("Rt", "True formation resistivity", "ohm*m", latex=r"R_t"), V("phi", "Porosity", "%", latex=r"\phi"), V("Sw", "Water saturation", "%", latex=r"S_w"),
+                   V("Sh", "Hydrocarbon saturation", "%", latex=r"S_h")],
+        equations=[("Density porosity", "phi = (rma - rb)/(rma - rfl)"), ("Archie's equation", "Sw = (a*Rw/(phi^m*Rt))^(1/n)"), ("Hydrocarbon saturation", "Sh = 1 - Sw")], outputs=["phi", "Sw", "Sh"],
+        tags=["well log", "archie", "resistivity", "porosity", "saturation", "formation evaluation"], validity=[("Rt > Rw", "formation resistivity should exceed water resistivity in a hydrocarbon zone")], assumptions=["Clean (shale-free) formation; Simandoux or Indonesia models for shaly sands"], references=["Archie (1942), Trans. AIME 146"],
+        example={"rma": "2.65 g/cm^3", "rb": "2.35 g/cm^3", "rfl": "1.0 g/cm^3", "a": "1", "m": "2", "n": "2", "Rw": "0.05 ohm*m", "Rt": "20 ohm*m"}),
+    Calculation(
+        id="petroleum.reservoir.volumetric_gas_in_place", name="Volumetric original gas in place",
+        disciplines=["petroleum"], subdisciplines=["Reservoir Engineering", "Petroleum Geology"],
+        description="Gas in place at standard conditions, G = A·h·φ(1−Sw)/Bg, with acre-feet converted by the unit system.",
+        variables=[V("A", "Reservoir area", "ac"), V("h", "Net pay thickness", "ft"), V("phi", "Porosity", "1", latex=r"\phi", min=0, max=1), V("Sw", "Water saturation", "1", latex=r"S_w", min=0, max=1), V("Bg", "Gas formation volume factor (res vol/std vol)", "1", latex=r"B_g"),
+                   V("G", "Gas in place", "Bcf")],
+        equations=["G = A*h*phi*(1 - Sw)/Bg"], outputs=["G"], tags=["ogip", "gas", "volumetrics", "reserves", "resource"], assumptions=["Uniform average properties; Bg from the gas formation-volume-factor calculation"], references=["Lee & Wattenbarger, Gas Reservoir Engineering, Ch. 4"], example={"A": "640 ac", "h": "50 ft", "phi": "0.15", "Sw": "0.30", "Bg": "0.005"}),
+    Calculation(
+        id="petroleum.production.gas_well_inflow", name="Steady-state gas well inflow (pressure-squared)",
+        disciplines=["petroleum"], subdisciplines=["Production Engineering", "Reservoir Engineering"],
+        description="Gas rate at standard conditions from a vertical well in radial flow, q = π k h (p̄r² − pwf²) T_sc / [p_sc μ z T (ln(re/rw) − ¾ + s)]. In field units this reproduces the 0.000703 constant.",
+        variables=[V("k", "Permeability", "mD"), V("h", "Net pay", "ft"), V("pr", "Reservoir pressure", "psi", latex=r"\bar p_r"), V("pw", "Flowing bottom-hole pressure", "psi", latex=r"p_{wf}"), V("mu", "Gas viscosity", "cP", latex=r"\mu"), V("z", "Gas z-factor", "1"),
+                   V("T", "Reservoir temperature (absolute)", "degR"), V("re", "Drainage radius", "ft", latex=r"r_e"), V("rw", "Wellbore radius", "ft", latex=r"r_w"), V("s", "Skin factor", "1", signed=True),
+                   C("psc", "Standard pressure", 14.696, "psi", latex=r"p_{sc}"), C("Tsc", "Standard temperature", 60, "degF", latex=r"T_{sc}"), V("qg", "Gas rate (standard conditions)", "Mcf/day", latex=r"q_g")],
+        equations=["qg = pi*k*h*(pr^2 - pw^2)*Tsc/(psc*mu*z*T*(log(re/rw) - 3/4 + s))"], outputs=["qg"], tags=["gas well", "deliverability", "inflow", "darcy", "pseudo-pressure", "skin"], validity=[("pr > pw", "drawdown must be positive")],
+        assumptions=["Pressure-squared approximation (valid below ≈ 2000 psi; use pseudo-pressure above), steady-state radial flow"], references=["Lee & Wattenbarger, Gas Reservoir Engineering, Ch. 6"], example={"k": "10 mD", "h": "50 ft", "pr": "3000 psi", "pw": "2000 psi", "mu": "0.02 cP", "z": "0.9", "T": "620 degR", "re": "2000 ft", "rw": "0.35 ft", "s": "0"}),
+]

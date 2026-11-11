@@ -1,0 +1,291 @@
+Aerospace Engineering
+
+Aeronautical Engineering
+Astronautical Engineering
+Propulsion Engineering
+Avionics Engineering
+Space Systems Engineering
+Aerodynamics
+Agricultural Engineering
+
+Bioengineering
+Irrigation Engineering
+Farm Machinery Engineering
+Soil and Water Engineering
+Agricultural Structures Engineering
+Food Engineering
+Biomedical Engineering
+
+Bioinformatics
+Bioinstrumentation
+Biomaterials
+Biomechanics
+Biomolecular Engineering
+Clinical Engineering
+Medical Imaging
+Neural Engineering
+Pharmaceutical Engineering
+Regenerative Medicine / Tissue Engineering
+Biomechatronics
+Medical Device Engineering
+Bioprinting
+Chemical Engineering
+
+Process Engineering
+Molecular Engineering
+Electrochemical Engineering
+Biochemical Engineering
+Petrochemical Engineering
+Pharmaceutical Engineering
+Polymer Engineering
+Environmental Chemical Engineering
+Nuclear Engineering
+Corrosion Engineering
+Food Engineering
+Textile Engineering
+Refinery Engineering
+Fuel Cell Engineering
+Pulp and Paper Engineering
+Powder Technology
+Civil Engineering
+
+Structural Engineering
+Geotechnical Engineering
+Transportation Engineering
+Environmental Engineering
+Water Resources Engineering
+Construction Engineering
+Municipal / Urban Engineering
+Architectural Engineering
+Hydraulic Engineering
+Coastal Engineering
+Earthquake Engineering
+Pavement Engineering
+Wind Engineering
+Sanitary Engineering
+Railway Engineering
+Highway Engineering
+Ocean Engineering
+River Engineering
+Groundwater Engineering
+Computer / Software Engineering
+
+Software Engineering
+Computer Engineering
+Embedded Systems Engineering
+Network Engineering
+Cybersecurity Engineering
+Data Engineering
+AI / Machine Learning Engineering
+Cloud Engineering
+IoT Engineering
+Computer-Aided Engineering
+Knowledge Engineering
+Usability Engineering
+Teletraffic Engineering
+Electrical Engineering
+
+Power Systems Engineering
+Electronics Engineering
+Telecommunications Engineering
+Control Systems Engineering
+Signal Processing
+Optoelectronics / Photonics
+RF and Microwave Engineering
+Power Electronics
+Instrumentation Engineering
+Broadcast Engineering
+Satellite Communication
+Smart Grid Engineering
+Electrical Machines and Drives
+Wireless Communication
+Electromechanical Engineering
+
+Mechatronics
+Control Engineering
+Instrumentation Engineering
+Electromechanics
+Environmental Engineering
+
+Sanitary Engineering
+Ecological Engineering
+Fire Protection Engineering
+Natural Resources Engineering
+Water and Wastewater Treatment
+Pollution Control
+Environmental Impact Assessment
+Industrial Engineering
+
+Systems Engineering
+Supply Chain Engineering
+Manufacturing Engineering
+Quality Control
+Logistics Engineering
+Ergonomics
+Operations Research
+Human Factors Engineering
+Materials Engineering
+
+Metallurgical Engineering
+Ceramic Engineering
+Polymer Engineering
+Composite Materials Engineering
+Nanotechnology
+Corrosion Engineering
+Surface Engineering
+Welding Engineering
+Computational Materials Science
+Electronic Materials
+Forensic Materials Engineering
+Tribology
+Mechanical Engineering
+
+Aerospace Engineering
+Automotive Engineering
+Marine / Naval Engineering
+Thermal Engineering
+Acoustical Engineering
+Manufacturing Engineering
+Energy Engineering
+Power Plant Engineering
+Vehicle Engineering
+Optomechanical Engineering
+Industrial Plant Engineering
+Robotics
+Sports Engineering
+Refrigeration Engineering
+Fluid Mechanics
+Mining Engineering
+
+Mineral Processing
+Geotechnical Mining
+Ventilation Engineering
+Surface Mining
+Underground Mining
+Mine Safety Engineering
+Nuclear Engineering
+
+Reactor Engineering
+Radiation Safety
+Nuclear Fuel Engineering
+Nuclear Waste Management
+Radiological Engineering
+Petroleum Engineering
+
+Reservoir Engineering
+Drilling Engineering
+Production Engineering
+Petroleum Geology
+Systems Engineering
+
+Requirements Engineering
+Integration Engineering
+Verification and Validation
+Software Systems Engineering
+Emerging and Interdisciplinary Fields
+Quantum Engineering
+
+Quantum Computing
+Quantum Sensing
+Quantum Communication / Cryptography
+Artificial Intelligence and Machine Learning Engineering
+
+Deep Learning Systems
+Natural Language Processing
+Computer Vision
+Reinforcement Learning
+Generative AI Systems
+Robotics and Automation Engineering
+
+Industrial Robotics
+Service Robotics
+Swarm Robotics
+Autonomous Systems
+Human-Robot Interaction
+Cybersecurity Engineering
+
+Network Security
+Cryptographic Engineering
+Threat Intelligence
+Secure Software Design
+Digital Forensics
+Data Science and Big Data Engineering
+
+Data Architecture
+Data Warehousing
+Streaming Data Processing
+Business Intelligence
+Nanotechnology Engineering
+
+Nanoelectronics
+Nanomedicine
+Nanomaterials
+Nano-biosensors
+Synthetic Biology Engineering
+
+Genetic Circuit Design
+Metabolic Engineering
+Biomanufacturing
+CRISPR Engineering
+Climate and Resilience Engineering
+
+Geoengineering
+Carbon Capture and Sequestration
+Climate Adaptation Design
+Resilient Infrastructure
+Smart Cities and IoT Engineering
+
+Urban Sensing
+Smart Infrastructure
+Connected Vehicles
+Digital Twin Systems
+Neuromorphic and Brain-Computer Interface Engineering
+
+Neuromodulation
+Neuroprosthetics
+Brain-Computer Interfaces
+Neuromorphic Computing
+Renewable and Sustainable Energy Engineering
+
+Solar Energy Engineering
+Wind Energy Engineering
+Hydrogen Energy
+Energy Storage / Battery Engineering
+Smart Grid and Microgrid Design
+Electric Vehicle Engineering
+Health Informatics and Health Science Engineering
+
+Clinical Data Systems
+Telemedicine Engineering
+Wearable Medical Devices
+AI-Assisted Diagnostics
+Additive Manufacturing Engineering
+
+3D Printing
+Metal Additive Manufacturing
+Bioprinting
+4D Printing
+Space Engineering
+
+Satellite Systems
+Space Propulsion
+Planetary Exploration
+Space Debris Management
+Metamaterials and Advanced Materials Engineering
+
+Metamaterials Design
+Smart / Adaptive Materials
+Self-Healing Materials
+Holographic Engineering
+Green / Sustainable Engineering
+
+Life Cycle Assessment
+Industrial Ecology
+Circular Economy Design
+Eco-Design
+Wearable and Soft Robotics Engineering
+
+Smart Textiles
+Soft Actuators
+Exoskeletons
+Health Monitoring Wearables

@@ -1,0 +1,68 @@
+from ..core import C, Calculation, V
+
+CALCS = [
+    Calculation(
+        id="nuclear.reactor.four_factor_reactivity", name="Four-factor formula, k_eff and reactivity",
+        disciplines=["nuclear"], subdisciplines=["Reactor Engineering"],
+        description="Infinite and effective multiplication factors from the four factors and non-leakage probabilities, and the resulting reactivity.",
+        variables=[V("eta", "Reproduction factor", "1", latex=r"\eta"), V("f", "Thermal utilisation", "1"), V("p", "Resonance escape probability", "1"), V("eps", "Fast fission factor", "1", latex=r"\varepsilon"),
+                   V("Pf", "Fast non-leakage probability", "1", latex=r"P_{FNL}"), V("Pt", "Thermal non-leakage probability", "1", latex=r"P_{TNL}"), V("kinf", "Infinite multiplication factor", "1", latex=r"k_\infty"),
+                   V("keff", "Effective multiplication factor", "1", latex=r"k_{eff}"), V("rho", "Reactivity", "pcm", latex=r"\rho", signed=True)],
+        equations=[("Four-factor formula", "kinf = eta*f*p*eps"), ("Six-factor formula", "keff = kinf*Pf*Pt"), ("Reactivity", "rho = (keff - 1)/keff")], outputs=["kinf", "keff", "rho"], tags=["criticality", "multiplication factor", "reactivity", "neutron", "pcm", "thermal reactor"],
+        assumptions=["Steady-state thermal reactor; delayed neutrons not separated"], references=["Lamarsh & Baratta, Introduction to Nuclear Engineering, Ch. 4–5"], example={"eta": "1.65", "f": "0.71", "p": "0.87", "eps": "1.02", "Pf": "0.97", "Pt": "0.99"}),
+    Calculation(
+        id="nuclear.reactor.power_from_flux", name="Reactor thermal power from neutron flux",
+        disciplines=["nuclear"], subdisciplines=["Reactor Engineering", "Nuclear Fuel Engineering"],
+        description="Fission rate and thermal power from macroscopic fission cross-section, flux and core volume.",
+        variables=[V("Sf", "Macroscopic fission cross-section", "1/cm", latex=r"\Sigma_f"), V("phi", "Average neutron flux", "1/(cm^2*s)", latex=r"\phi"), V("Vc", "Core volume", "m^3"), C("Ef", "Recoverable energy per fission", 200, "MeV", latex=r"E_f"),
+                   V("Rf", "Fission rate", "1/s", latex=r"R_f"), V("P", "Thermal power", "MW")],
+        equations=[("Fission rate", "Rf = Sf*phi*Vc"), ("Thermal power", "P = Rf*Ef")], outputs=["Rf", "P"], tags=["power", "flux", "fission rate", "core", "neutronics", "mwt"], assumptions=["Flux and cross-section are core averages"], references=["Lamarsh & Baratta, Ch. 6"], example={"Sf": "0.0036 1/cm", "phi": "3e13 1/(cm^2*s)", "Vc": "30 m^3"}),
+    Calculation(
+        id="nuclear.fuel.enrichment_swu", name="Enrichment: feed requirement and separative work",
+        disciplines=["nuclear"], subdisciplines=["Nuclear Fuel Engineering"],
+        description="Natural-uranium feed and separative work units needed for an enriched product at a given tails assay.",
+        variables=[V("P", "Product mass", "kg"), V("xp", "Product assay", "%", latex=r"x_p"), V("xt", "Tails assay", "%", latex=r"x_t"), V("xf", "Feed assay", "%", latex=r"x_f", default=0.711), V("F", "Feed mass", "kg"), V("T", "Tails mass", "kg"),
+                   V("Vp", "Value function at product", "1", latex=r"V(x_p)"), V("Vt", "Value function at tails", "1", latex=r"V(x_t)"), V("Vf", "Value function at feed", "1", latex=r"V(x_f)"), V("SWU", "Separative work", "kg", latex=r"SWU")],
+        equations=[("Feed mass", "F = P*(xp - xt)/(xf - xt)"), ("Tails mass", "T = F - P"), ("Value at product", "Vp = (2*xp - 1)*log(xp/(1 - xp))"), ("Value at tails", "Vt = (2*xt - 1)*log(xt/(1 - xt))"),
+                   ("Value at feed", "Vf = (2*xf - 1)*log(xf/(1 - xf))"), ("Separative work", "SWU = P*Vp + T*Vt - F*Vf")], outputs=["F", "T", "SWU"], tags=["enrichment", "swu", "centrifuge", "uranium", "leu", "fuel cycle"],
+        validity=[("xp > xf", "product assay must exceed feed assay"), ("xf > xt", "feed assay must exceed tails assay")], assumptions=["Ideal cascade"], references=["Benedict, Pigford & Levi, Nuclear Chemical Engineering, Ch. 14"], example={"P": "1 kg", "xp": "4.5 %", "xt": "0.25 %", "xf": "0.711 %"}),
+    Calculation(
+        id="nuclear.fuel.burnup", name="Fuel burnup and energy per unit mass",
+        disciplines=["nuclear", "energy"], subdisciplines=["Nuclear Fuel Engineering", "Reactor Engineering"],
+        description="Burnup from thermal power, irradiation time and heavy-metal mass, and the equivalent electrical energy.",
+        variables=[V("P", "Core thermal power", "MW"), V("t", "Irradiation time", "day"), V("mhm", "Heavy-metal mass", "t", latex=r"m_{HM}"), V("eth", "Thermal-to-electric efficiency", "%", latex=r"\eta"), V("Bu", "Burnup", "MW*day/kg"), V("Ee", "Electrical energy per kg HM", "kWh/kg")],
+        equations=[("Burnup", "Bu = P*t/mhm"), ("Electrical energy", "Ee = eth*Bu")], outputs=["Bu", "Ee"], tags=["burnup", "mwd/kg", "fuel", "discharge", "lwr", "energy"], assumptions=["Constant power"], references=["Lamarsh & Baratta, Ch. 11"], example={"P": "3400 MW", "t": "1500 day", "mhm": "100 t", "eth": "33 %"}),
+    Calculation(
+        id="nuclear.radiation_safety.point_source_dose", name="Gamma point-source dose rate with shielding",
+        disciplines=["nuclear", "biomedical"], subdisciplines=["Radiation Safety", "Radiological Engineering", "Medical Imaging"],
+        description="Dose rate from a point source by the inverse-square law with a gamma-ray constant, the shielded dose rate, and the permitted stay time for a dose limit.",
+        variables=[V("Gam", "Gamma-ray constant", "mSv*m^2/(GBq*h)", latex=r"\Gamma"), V("A", "Source activity", "GBq"), V("r", "Distance", "m"), V("mu", "Shield attenuation coefficient", "1/cm", latex=r"\mu"), V("x", "Shield thickness", "cm"), V("Dl", "Dose limit", "mSv"),
+                   V("D0", "Unshielded dose rate", "mSv/h", latex=r"\dot D_0"), V("Ds", "Shielded dose rate", "mSv/h", latex=r"\dot D_s"), V("ts", "Permitted stay time", "h", latex=r"t")],
+        equations=[("Unshielded dose rate", "D0 = Gam*A/r^2"), ("Shielded dose rate", "Ds = D0*exp(-mu*x)"), ("Stay time", "ts = Dl/Ds")], outputs=["D0", "Ds", "ts"], tags=["alara", "shielding", "dose rate", "time distance shielding", "cobalt-60", "gamma source"],
+        assumptions=["Unscattered narrow-beam attenuation (no build-up) — non-conservative for thick shields; ALARA applies"], references=["Cember & Johnson, Introduction to Health Physics, Ch. 10; ICRP 103"],
+        example={"Gam": "0.351 mSv*m^2/(GBq*h)", "A": "1000 GBq", "r": "3 m", "mu": "0.65 1/cm", "x": "5 cm", "Dl": "1 mSv"}),
+    Calculation(
+        id="nuclear.waste.radioactive_decay", name="Radioactive decay and time to reach a limit",
+        disciplines=["nuclear", "environmental"], subdisciplines=["Nuclear Waste Management", "Radiological Engineering"],
+        description="Decay constant, remaining activity after time t, and the storage time for activity to fall below a release limit.",
+        variables=[V("A0", "Initial activity", "GBq", latex=r"A_0"), V("th", "Half-life", "yr", latex=r"t_{1/2}"), V("t", "Elapsed time", "yr"), V("Al", "Release limit activity", "kBq", latex=r"A_{lim}"), V("lam", "Decay constant", "1/yr", latex=r"\lambda"),
+                   V("At", "Activity at time t", "GBq", latex=r"A(t)"), V("tl", "Time to reach limit", "yr", latex=r"t_{lim}")],
+        equations=[("Decay constant", "lam = log(2)/th"), ("Activity", "At = A0*exp(-lam*t)"), ("Time to limit", "tl = log(A0/Al)/lam")], outputs=["lam", "At", "tl"], tags=["half-life", "decay", "waste", "storage", "cesium", "cobalt"], assumptions=["Single radionuclide without ingrowth of radioactive daughters"],
+        references=["Lamarsh & Baratta, Ch. 3; IAEA Safety Standards GSR Part 3"], example={"A0": "1000 GBq", "th": "30.17 yr", "t": "100 yr", "Al": "10 kBq"}),
+    Calculation(
+        id="nuclear.waste.decay_heat_way_wigner", name="Decay heat after shutdown (Way–Wigner)",
+        disciplines=["nuclear"], subdisciplines=["Nuclear Waste Management", "Reactor Engineering"],
+        description="Fraction of operating power released as decay heat a time t after shutdown, P/P₀ = 0.0622[t^−0.2 − (t + T₀)^−0.2] with times in seconds.",
+        variables=[V("P0", "Operating thermal power", "MW", latex=r"P_0"), V("T0", "Operating time before shutdown", "day", latex=r"T_0"), V("t", "Time since shutdown", "h"), C("tu", "One second", 1, "s", latex=r"1\,\mathrm{s}"),
+                   V("fr", "Decay-heat fraction", "%"), V("Pd", "Decay heat", "MW", latex=r"P_d")],
+        equations=[("Heat fraction", "fr = 622/10000*((t/tu)^(-1/5) - ((t + T0)/tu)^(-1/5))"), ("Decay heat", "Pd = fr*P0")], outputs=["fr", "Pd"], tags=["decay heat", "shutdown", "spent fuel pool", "loca", "cooling", "way-wigner"],
+        assumptions=["Approximation for 10 s < t < 100 days; use ANS-5.1 for licensing"], references=["Way & Wigner (1948); ANS-5.1"], example={"P0": "3000 MW", "T0": "365 day", "t": "24 h"}),
+    Calculation(
+        id="nuclear.radiological.committed_dose_intake", name="Committed effective dose from ingestion",
+        disciplines=["nuclear", "environmental"], subdisciplines=["Radiological Engineering", "Radiation Safety"],
+        description="Annual intake and committed effective dose from a radionuclide in drinking water or food, compared with the public dose limit.",
+        variables=[V("Cw", "Activity concentration", "Bq/L"), V("U", "Consumption rate", "L/day"), V("d", "Exposure duration", "day"), V("eg", "Dose coefficient", "nSv/Bq", latex=r"e(g)"), V("Dlim", "Dose limit", "mSv", default=1), V("Iq", "Intake", "kBq"),
+                   V("E", "Committed effective dose", "uSv"), V("fl", "Fraction of dose limit", "%")],
+        equations=[("Intake", "Iq = Cw*U*d"), ("Dose", "E = Iq*eg"), ("Fraction of limit", "fl = E/Dlim")], outputs=["Iq", "E", "fl"], tags=["ingestion", "drinking water", "cs-137", "public dose", "dose coefficient", "radioactivity"],
+        assumptions=["Adult dose coefficient, constant intake; e.g. Cs-137 ≈ 13 nSv/Bq (ICRP 119)"], references=["ICRP 119; WHO Guidelines for Drinking-water Quality"], example={"Cw": "10 Bq/L", "U": "2 L/day", "d": "365 day", "eg": "13 nSv/Bq", "Dlim": "1 mSv"}),
+]

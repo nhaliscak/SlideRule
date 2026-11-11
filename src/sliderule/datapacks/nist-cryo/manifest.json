@@ -1,0 +1,150 @@
+{
+  "id": "nist-cryo",
+  "version": "0.1.0",
+  "title": "Cryogenic thermal properties (NIST Cryogenic Technologies Group fits)",
+  "kind": "materials",
+  "licence": "Source: National Institute of Standards and Technology (NIST), Cryogenic Technologies Group, https://trc.nist.gov/cryogenics/materials/materialproperties.htm. Changed by SlideRule: NIST publishes polynomial fit coefficients, not tables. SlideRule evaluated each fit at 60 log-spaced temperatures inside the range covered by both NIST's data and its equation, rounded the results to 6 significant figures and stores them as a curve that is interpolated between those points (PCHIP). Only thermal conductivity and specific heat are used. Built 2026-11-05. NIST statement for distributions of non-SRD data: This data/work was created by employees of the National Institute of Standards and Technology (NIST), an agency of the Federal Government. Pursuant to title 17 United States Code Section 105, works of NIST employees are not subject to copyright protection in the United States. This data/work may be subject to foreign copyright.\n\nThe data/work is provided by NIST as a public service and is expressly provided \"AS IS.\" NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED OR STATUTORY, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST does not warrant or make any representations regarding the use of the data or the results thereof, including but not limited to the correctness, accuracy, reliability or usefulness of the data. NIST SHALL NOT BE LIABLE AND YOU HEREBY RELEASE NIST FROM LIABILITY FOR ANY INDIRECT, CONSEQUENTIAL, SPECIAL, OR INCIDENTAL DAMAGES (INCLUDING DAMAGES FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, AND THE LIKE), WHETHER ARISING IN TORT, CONTRACT, OR OTHERWISE, ARISING FROM OR RELATING TO THE DATA (OR THE USE OF OR INABILITY TO USE THIS DATA), EVEN IF NIST HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.\n\nTo the extent that NIST may hold copyright in countries other than the United States, you are hereby granted the non-exclusive irrevocable and unconditional right to print, publish, prepare derivative works and distribute the NIST data, in any medium, or authorize others to do so on your behalf, on a royalty-free basis throughout the world.",
+  "status": "Fits evaluated inside the range covered by both NIST's data and its equation; not for design",
+  "design_use": false,
+  "sources": [
+    {
+      "id": "1100-aluminum",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: 1100 Aluminum; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/1100%20Aluminum/1100%20Aluminum_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "3003f-aluminum",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: 3003F Aluminum; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/3003F%20Aluminum/3003FAluminum_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "5083-aluminum",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: 5083 Aluminum; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/5083%20Aluminum/5083Aluminum_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "6061-aluminum",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: 6061-T6 Aluminum; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/6061%20Aluminum/6061_T6Aluminum_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "6063-t5-alulminum",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: 6063-T5 Aluminum; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/6063_T5%20Alulminum/6063-T5Aluminum_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "beryllium-copper",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: Beryllium Copper; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/Beryllium%20Copper/BerylliumCopper_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "brass",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: Brass; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/Brass/Brass_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "g-10-cr-fiberglass-epoxy",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: G-10 CR (Fiberglass Epoxy); log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/G-10%20CR%20Fiberglass%20Epoxy/G10CRFiberglassEpoxy_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "iconel-718",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: Inconel 718; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/Iconel%20718/Inconel718_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "indium",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: Indium; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/Indium/Indium_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "invar-fe-36ni",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: Invar (Fe-36Ni); log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/Invar(Fe-36Ni)/Invar_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "lead",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: Lead; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/Lead/Lead_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "molybdenum",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: Molybdenum; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/Molybdenum/Molybdenum_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "platinum",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: Platinum; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/Platinum/Platinum_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "polyamide-nylon",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: Polyamide (Nylon); log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/Polyamide%20(Nylon)/PolyamideNylon_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "pet",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: Polyethylene Terephthalate; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/PET/PET_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "polyimide-kapton",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: Polyimide (Kapton); log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/Polyimide%20Kapton/PolyimideKapton_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "304stainless",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: 304 Stainless; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/304Stainless/304Stainless_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "304lstainless",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: 304L Stainless; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/304LStainless/304LStainless_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "310-stainless",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: 310 Stainless; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/310%20Stainless/310Stainless_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "316stainless",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: 316 Stainless; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/316Stainless/316Stainless_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "teflon",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: Teflon; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/Teflon/Teflon_rev.htm",
+      "accessed": "2026-11-03"
+    },
+    {
+      "id": "ti6al4v",
+      "ref": "NIST Cryogenic Technologies Group, Cryogenic Material Properties: Ti 6Al 4V; log10 polynomial fit evaluated by SlideRule",
+      "url": "https://trc.nist.gov/cryogenics/materials/Ti6Al4V/Ti6Al4V_rev.htm",
+      "accessed": "2026-11-03"
+    }
+  ],
+  "checksum": "27670e40ba328f31b18f75f8e28a00abf1255e425f68a75475a38a50adcbf423"
+}

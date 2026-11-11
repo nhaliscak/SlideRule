@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sliderule"
+version = "0.1.0"
+description = "Unit-aware engineering calculations with symbolic and numeric step-by-step solutions. No LLMs: just code."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Nicholas Haliscak" }]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Education",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering",
+]
+requires-python = ">=3.12"
+dependencies = ["sympy>=1.12", "numpy>=1.26", "scipy>=1.11"]
+keywords = ["engineering", "units", "calculator", "dimensional analysis"]
+
+[project.urls]
+Homepage = "https://github.com/nhaliscak/SlideRule"
+Issues = "https://github.com/nhaliscak/SlideRule/issues"
+Documentation = "https://github.com/nhaliscak/SlideRule/tree/main/docs"
+
+[project.optional-dependencies]
+server = ["fastapi>=0.110", "uvicorn>=0.27"]
+desktop = ["fastapi>=0.110", "uvicorn>=0.27", "pywebview[qt]>=5; sys_platform == 'linux'", "pywebview>=5; sys_platform != 'linux'"]
+props = ["CoolProp>=6.6"]
+dev = ["CoolProp>=6.6", "pytest>=8", "httpx>=0.27", "fastapi>=0.110", "uvicorn>=0.27", "ruff>=0.5"]
+
+[project.scripts]
+sliderule = "sliderule.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+sliderule = ["web/**/*", "datapacks/**/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 130
+target-version = "py312"
+
+[tool.ruff.lint]
+# Correctness rules only; the formula code uses short math names (l, I, E) and one-line lambdas on purpose.
+select = ["E4", "E7", "E9", "F", "W"]
+ignore = ["E731", "E741", "E702", "F841"]   # F841: 19 leftover unused locals, to be cleaned case by case
+
+[tool.ruff.lint.per-file-ignores]
+"tests/test_physics_chemistry.py" = ["E402"]

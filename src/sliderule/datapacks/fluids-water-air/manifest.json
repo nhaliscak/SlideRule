@@ -1,0 +1,39 @@
+{
+  "id": "fluids-water-air",
+  "version": "0.1.0",
+  "title": "Water and dry air (curves against temperature)",
+  "kind": "fluids",
+  "licence": "Correlations are published formulas; reference points are facts from the cited table; the compiled pack is released under the MIT licence of this repository",
+  "status": "Computed curves from published correlations, checked against a reference table; suitable for hand calculations, see each property's rel_uncertainty",
+  "design_use": false,
+  "sources": [
+    {
+      "id": "kell",
+      "ref": "G. S. Kell, Density, thermal expansivity and compressibility of liquid water from 0 to 150 C, J. Chem. Eng. Data 20(1), 97-105 (1975)"
+    },
+    {
+      "id": "vogel",
+      "ref": "Vogel-form viscosity fit mu = 2.414e-5 * 10^(247.8/(T-140)) Pa s; checked here against the IAPWS-based table at https://www.chem-casts.com/knowledge/viscosity-of-water"
+    },
+    {
+      "id": "if97",
+      "ref": "IAPWS R7-97(2012), Revised Release on the IAPWS Industrial Formulation 1997, section 8.1 saturation-pressure equation",
+      "url": "https://iapws.org/documents/release/IF97-Rev.download"
+    },
+    {
+      "id": "idealgas",
+      "ref": "Ideal-gas law with the specific gas constant of dry air, 287.05 J/(kg K)"
+    },
+    {
+      "id": "white",
+      "ref": "F. M. White, Viscous Fluid Flow, Sutherland constants for air (viscosity: 1.716e-5 Pa s, 273.15 K, 110.4 K; conductivity: 0.0241 W/(m K), 273 K, 194 K)"
+    },
+    {
+      "id": "cengel",
+      "ref": "Y. A. Cengel and J. M. Cimbala, Fluid Mechanics: Fundamentals and Applications, 3rd ed., McGraw-Hill (2014), Table A-3 (saturated water) and Table A-9 (air at 1 atm)",
+      "url": "https://www.me.psu.edu/cimbala/me405/Links/Table_A_3_CC_Saturated_Water.pdf",
+      "accessed": "2026-10-31"
+    }
+  ],
+  "checksum": "41a33a9a7821f43b376289115d912a99eef1d99b507bfb06a25dadcd766e5e75"
+}

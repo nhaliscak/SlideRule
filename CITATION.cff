@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use SlideRule in your work, please cite it as below."
+title: "SlideRule: unit-aware engineering calculations with worked solutions"
+type: software
+authors:
+  - family-names: Haliscak
+    given-names: Nicholas
+repository-code: "https://github.com/nhaliscak/SlideRule"
+license: MIT
+version: 0.1.0

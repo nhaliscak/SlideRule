@@ -1,0 +1,145 @@
+{
+  "id": "fluids-coolprop",
+  "version": "0.1.0",
+  "title": "Common fluids from CoolProp (curves against temperature at 1 atm)",
+  "kind": "fluids",
+  "licence": "Values computed with the MIT-licensed CoolProp library from published equations of state; the computed numbers are physical facts and are released under the MIT licence of this repository",
+  "status": "Computed by CoolProp 8.0.0; for hand calculations and checking, see each property's rel_uncertainty (generic orders of magnitude, fluid-specific uncertainties are in the cited models)",
+  "design_use": false,
+  "sources": [
+    {
+      "id": "coolprop",
+      "ref": "I. H. Bell, J. Wronski, S. Quoilin, V. Lemort, Pure and pseudo-pure fluid thermophysical property evaluation and the open-source thermophysical property library CoolProp, Ind. Eng. Chem. Res. 53(6), 2498-2508 (2014); CoolProp 8.0.0 (MIT licence)",
+      "url": "https://coolprop.org"
+    },
+    {
+      "id": "cp-water",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Wagner-JPCRD-2002, viscosity: Huber-JPCRD-2009, conductivity: Huber-JPCRD-2012)"
+    },
+    {
+      "id": "cp-air",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Lemmon-JPCRD-2000, viscosity: Lemmon-IJT-2004, conductivity: Lemmon-IJT-2004)"
+    },
+    {
+      "id": "cp-nitrogen",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Span-JPCRD-2000, viscosity: Lemmon-IJT-2004, conductivity: Lemmon-IJT-2004)"
+    },
+    {
+      "id": "cp-oxygen",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Schmidt-FPE-1985,Stewart-JPCRD-1991, viscosity: Lemmon-IJT-2004, conductivity: Lemmon-IJT-2004)"
+    },
+    {
+      "id": "cp-argon",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Tegeler-JPCRD-1999, viscosity: Lemmon-IJT-2004, conductivity: Lemmon-IJT-2004)"
+    },
+    {
+      "id": "cp-helium",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: OrtizVega-JPCRD-2019, viscosity: Arp-NIST-1998, conductivity: Hands-CRYO-1981)"
+    },
+    {
+      "id": "cp-hydrogen",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Leachman-JPCRD-2009, viscosity: Muzny-JCED-2013, conductivity: Assael-JPCRD-2011-Hydrogen)"
+    },
+    {
+      "id": "cp-carbondioxide",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Span-JPCRD-1996, viscosity: Laesecke-JPCRD-2017-CO2, conductivity: Huber-JPCRD-2016-CO2)"
+    },
+    {
+      "id": "cp-carbonmonoxide",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Lemmon-JCED-2006)"
+    },
+    {
+      "id": "cp-methane",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Setzmann-JPCRD-1991, viscosity: QuinonesCisneros-JPCB-2006, conductivity: Friend-JPCRD-1989)"
+    },
+    {
+      "id": "cp-ethane",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Buecker-JPCRD-2006, viscosity: Friend-JPCRD-1991, conductivity: Friend-JPCRD-1991)"
+    },
+    {
+      "id": "cp-propane",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Lemmon-JCED-2009, viscosity: Vogel-JPCRD-1998, conductivity: Marsh-JCED-2002)"
+    },
+    {
+      "id": "cp-n-butane",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Buecker-JPCRD-2006B, viscosity: Vogel-HTHP-1999, conductivity: Perkins-JCED-2002-nButane)"
+    },
+    {
+      "id": "cp-isobutane",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Buecker-JPCRD-2006B, viscosity: Vogel-IJT-2000, conductivity: Perkins-JCED-2002-Isobutane)"
+    },
+    {
+      "id": "cp-n-pentane",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Thol-FPE-2019-alkanes-pentane, viscosity: QuinonesCisneros-JPCB-2006, conductivity: Vassiliou-JPCRD-2015-pentanes)"
+    },
+    {
+      "id": "cp-n-hexane",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Thol-FPE-2019-alkanes-hexane, viscosity: Michailidou-JPCRD-2013-Hexane, conductivity: Assael-JPCRD-2013-Hexane)"
+    },
+    {
+      "id": "cp-n-heptane",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Span-IJT-2003B, viscosity: Michailidou-JPCRD-2014-Heptane, conductivity: Assael-JPCRD-2013-Heptane)"
+    },
+    {
+      "id": "cp-ethylene",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Smukala-JPCRD-2000)"
+    },
+    {
+      "id": "cp-benzene",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Thol-HTHP-2012, viscosity: Avgeri-JPCRD-2014-Benzene, conductivity: Assael-JPCRD-2012-Benzene)"
+    },
+    {
+      "id": "cp-toluene",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Lemmon-JCED-2006, viscosity: Avgeri-JPCRD-2015-Toluene, conductivity: Assael-JPCRD-2012-Toluene)"
+    },
+    {
+      "id": "cp-methanol",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: deReuck-BOOK-1993, viscosity: Xiang-JPCRD-2006, conductivity: Sykioti-JPCRD-2013-Methanol)"
+    },
+    {
+      "id": "cp-ethanol",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Schroeder-JPCRD-2014, viscosity: Kiselev-IECR-2005, conductivity: Assael-JPCRD-2013-Ethanol)"
+    },
+    {
+      "id": "cp-acetone",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Lemmon-JCED-2006)"
+    },
+    {
+      "id": "cp-ammonia",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Gao-JPCRD-2020, viscosity: Fenghour-JPCRD-1995, conductivity: Tufeu-BBPC-1984)"
+    },
+    {
+      "id": "cp-r134a",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: TillnerRoth-JPCRD-1994, viscosity: Huber-IECR-2003, conductivity: McLinden-IJR-2000)"
+    },
+    {
+      "id": "cp-r32",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: TillnerRoth-JPCRD-1997, viscosity: Bell-PURDUE-2016-ETA, conductivity: Huber-IECR-2003)"
+    },
+    {
+      "id": "cp-r125",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Lemmon-JPCRD-2005, viscosity: Huber-IECR-2006, conductivity: Perkins-JCED-2006)"
+    },
+    {
+      "id": "cp-r152a",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Outcalt-JPCRD-1996-R152A, viscosity: Bell-PURDUE-2016-ETA, conductivity: Krauss-IJT-1996)"
+    },
+    {
+      "id": "cp-r1234yf",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Lemmon-IJT-2022, viscosity: Bell-PURDUE-2016-ETA, conductivity: Perkins-JCED-2011)"
+    },
+    {
+      "id": "cp-r1234ze-e",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Thol-IJT-2016-R1234zeE, viscosity: Bell-PURDUE-2016-ETA, conductivity: Perkins-JCED-2011)"
+    },
+    {
+      "id": "cp-sulfurdioxide",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Gao-JCED-2016)"
+    },
+    {
+      "id": "cp-nitrousoxide",
+      "ref": "Bell et al., Ind. Eng. Chem. Res. 53, 2498 (2014), CoolProp 8.0.0; literature keys as reported by CoolProp (eos: Lemmon-JCED-2006)"
+    }
+  ],
+  "checksum": "3b9c2ec8d4f7e3893f7bfa8a3301dd6a363372224431698d3ceae9faa130d6ed"
+}

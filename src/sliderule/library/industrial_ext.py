@@ -1,0 +1,82 @@
+from ..core import C, Calculation, V
+
+DB = ["dB"]
+
+CALCS = [
+    Calculation(
+        id="industrial.supply_chain.safety_stock_rop", name="Safety stock and reorder point",
+        disciplines=["industrial"], subdisciplines=["Supply Chain Engineering", "Logistics Engineering"],
+        description="Safety stock for a target cycle-service level under demand variability and the resulting reorder point.",
+        variables=[V("SL", "Cycle-service level", "%", min=50, max=99.99), V("sd", "Std. deviation of demand per period", "ea", latex=r"\sigma_d"), V("L", "Lead time (number of periods)", "1"), V("dm", "Mean demand per period", "ea", latex=r"\bar d"),
+                   V("z", "Service factor z", "1"), V("SS", "Safety stock", "ea"), V("ROP", "Reorder point", "ea")],
+        equations=[("Service factor", "z = sqrt(2)*erfinv(2*SL - 1)"), ("Safety stock", "SS = z*sd*sqrt(L)"), ("Reorder point", "ROP = dm*L + SS")], outputs=["z", "SS", "ROP"], tags=["inventory", "service level", "safety stock", "reorder point", "demand variability"],
+        assumptions=["Normally distributed independent demand, constant lead time"], references=["Silver, Pyke & Thomas, Inventory and Production Management in Supply Chains"], example={"SL": "95 %", "sd": "40 ea", "L": "9", "dm": "100 ea"}),
+    Calculation(
+        id="industrial.operations_research.newsvendor", name="Newsvendor optimal order quantity",
+        disciplines=["industrial"], subdisciplines=["Operations Research", "Supply Chain Engineering"],
+        description="Single-period order quantity that balances overage and underage costs under normally distributed demand.",
+        variables=[V("Cu", "Underage cost per unit", "USD/ea", latex=r"C_u"), V("Co", "Overage cost per unit", "USD/ea", latex=r"C_o"), V("mu", "Mean demand", "ea", latex=r"\mu"), V("sg", "Std. deviation of demand", "ea", latex=r"\sigma"), V("CR", "Critical ratio", "%"),
+                   V("zc", "Standard normal quantile", "1", latex=r"z", signed=True), V("Qs", "Optimal order quantity", "ea", latex=r"Q^*")],
+        equations=[("Critical ratio", "CR = Cu/(Cu + Co)"), ("Normal quantile", "zc = sqrt(2)*erfinv(2*CR - 1)"), ("Order quantity", "Qs = mu + zc*sg")], outputs=["CR", "zc", "Qs"], tags=["newsvendor", "perishable", "single period", "stochastic", "ordering"],
+        assumptions=["Single selling period, no salvage-value asymmetry beyond Cu/Co, normal demand"], references=["Nahmias, Production and Operations Analysis, Ch. 5"], example={"Cu": "6 USD/ea", "Co": "4 USD/ea", "mu": "500 ea", "sg": "80 ea"}),
+    Calculation(
+        id="industrial.logistics.fleet_size", name="Truck fleet size from haul cycle",
+        disciplines=["industrial", "civil", "mining"], subdisciplines=["Logistics Engineering", "Surface Mining"],
+        description="Round-trip cycle time and the number of trucks needed to move a daily tonnage.",
+        variables=[V("Dd", "Daily tonnage to move", "t/day"), V("Qt", "Truck payload", "t"), V("d", "One-way distance", "km"), V("v", "Average speed", "km/h"), V("tl", "Load + unload time", "h", latex=r"t_L"), V("H", "Productive hours per day", "h"),
+                   C("tday", "One day", 1, "day", latex=r"1\,\mathrm{day}"), V("ct", "Cycle time", "h", latex=r"t_c"), V("N", "Trucks required", "1")],
+        equations=[("Cycle time", "ct = 2*d/v + tl"), ("Fleet size", "N = Dd*tday/Qt*ct/H")], outputs=["ct", "N"], tags=["trucking", "haulage", "fleet", "cycle time", "logistics", "transport"], assumptions=["Round up N; no queuing, breakdowns or return-load revenue"], references=["Ballou, Business Logistics/Supply Chain Management"],
+        example={"Dd": "500 t/day", "Qt": "20 t", "d": "60 km", "v": "50 km/h", "tl": "1 h", "H": "10 h"}),
+    Calculation(
+        id="industrial.quality.xbar_chart_arl", name="X-bar control limits and shift-detection ARL",
+        disciplines=["industrial", "systems"], subdisciplines=["Quality Control"],
+        description="3σ control limits for subgroup means and the average run length to detect a mean shift of k process standard deviations.",
+        variables=[V("m0", "Process mean", "mm", latex=r"\mu_0"), V("sg", "Process standard deviation", "mm", latex=r"\sigma"), V("n", "Subgroup size", "1"), V("ks", "Mean shift (in σ units)", "1", latex=r"k"), V("UCL", "Upper control limit", "mm"), V("LCL", "Lower control limit", "mm"),
+                   V("Pd", "Probability of signal on one subgroup", "%", latex=r"P_d"), V("ARL", "Average run length after the shift", "1")],
+        equations=[("Upper limit", "UCL = m0 + 3*sg/sqrt(n)"), ("Lower limit", "LCL = m0 - 3*sg/sqrt(n)"),
+                   ("Detection probability", "Pd = 1 - ((1 + erf((3 - ks*sqrt(n))/sqrt(2)))/2 - (1 + erf((-3 - ks*sqrt(n))/sqrt(2)))/2)"), ("ARL", "ARL = 1/Pd")],
+        outputs=["UCL", "LCL", "Pd", "ARL"], tags=["spc", "control chart", "shewhart", "arl", "process monitoring", "six sigma"], assumptions=["Normal, independent subgroups, known σ"], references=["Montgomery, Introduction to Statistical Quality Control, Ch. 6"], example={"m0": "10.00 mm", "sg": "0.02 mm", "n": "5", "ks": "1"}),
+    Calculation(
+        id="industrial.manufacturing.line_bottleneck", name="Production line bottleneck, throughput and balance",
+        disciplines=["industrial", "mechanical"], subdisciplines=["Manufacturing Engineering", "Operations Research"],
+        description="Bottleneck station, maximum throughput and line efficiency for three serial stations.",
+        variables=[V("t1", "Station 1 cycle time", "s/ea", latex=r"t_1"), V("t2", "Station 2 cycle time", "s/ea", latex=r"t_2"), V("t3", "Station 3 cycle time", "s/ea", latex=r"t_3"), V("tb", "Bottleneck cycle time", "s/ea", latex=r"t_b"),
+                   V("TH", "Maximum throughput", "ea/h", latex=r"TH"), V("eff", "Line balance efficiency", "%", latex=r"\eta"), V("idle", "Idle fraction", "%")],
+        equations=[("Bottleneck", "tb = Max(t1, t2, t3)"), ("Throughput", "TH = 1/tb"), ("Balance efficiency", "eff = (t1 + t2 + t3)/(3*tb)"), ("Idle", "idle = 1 - eff")], outputs=["tb", "TH", "eff", "idle"],
+        tags=["bottleneck", "line balancing", "throughput", "theory of constraints", "assembly line", "cycle time"], assumptions=["Serial line, no buffers or breakdowns"], references=["Hopp & Spearman, Factory Physics, Ch. 7"], example={"t1": "30 s/ea", "t2": "45 s/ea", "t3": "38 s/ea"}),
+    Calculation(
+        id="industrial.ergonomics.niosh_lifting", name="NIOSH recommended weight limit and lifting index",
+        disciplines=["industrial"], subdisciplines=["Ergonomics", "Human Factors Engineering"],
+        description="Recommended weight limit for a manual lift from task geometry, frequency and coupling multipliers (metric form), and the lifting index.",
+        variables=[C("LC", "Load constant", 23, "kg"), C("H0", "Horizontal reference distance", 25, "cm", latex=r"25"), C("V0", "Vertical reference height", 75, "cm", latex=r"75"), C("kv", "Vertical multiplier slope", 0.003, "1/cm"), C("d0", "Distance constant", 4.5, "cm"),
+                   C("ka", "Asymmetry multiplier slope", 0.0032, "1/deg"), V("H", "Horizontal distance of hands", "cm"), V("Vh", "Vertical height of hands at origin", "cm", latex=r"V"), V("D", "Vertical travel distance", "cm"), V("A", "Asymmetry angle", "deg"),
+                   V("FM", "Frequency multiplier", "1", min=0, max=1), V("CM", "Coupling multiplier", "1", min=0, max=1), V("Lw", "Weight of load", "kg", latex=r"L"), V("HM", "Horizontal multiplier", "1"), V("VM", "Vertical multiplier", "1"), V("DM", "Distance multiplier", "1"),
+                   V("AM", "Asymmetry multiplier", "1"), V("RWL", "Recommended weight limit", "kg"), V("LI", "Lifting index", "1")],
+        equations=[("Horizontal multiplier", "HM = H0/H"), ("Vertical multiplier", "VM = 1 - kv*Abs(Vh - V0)"), ("Distance multiplier", "DM = 82/100 + d0/D"), ("Asymmetry multiplier", "AM = 1 - ka*A"), ("Recommended weight limit", "RWL = LC*HM*VM*DM*AM*FM*CM"), ("Lifting index", "LI = Lw/RWL")],
+        outputs=["HM", "VM", "DM", "AM", "RWL", "LI"], tags=["manual handling", "lifting", "niosh", "musculoskeletal", "ergonomics", "injury risk"], validity=[("LI < 1", "lifting index above 1: the task presents an increased risk of back injury")],
+        assumptions=["Two-handed lifts, H 25–63 cm, V 0–175 cm, D 25–175 cm, A 0–135°; H and D below the minimum are not covered by the equation"], references=["Waters et al. (1993), Ergonomics 36(7); NIOSH Pub. 94-110"],
+        example={"H": "30 cm", "Vh": "60 cm", "D": "50 cm", "A": "0 deg", "FM": "1", "CM": "1", "Lw": "15 kg"}),
+    Calculation(
+        id="industrial.human_factors.noise_exposure", name="Occupational noise: permissible exposure and dose",
+        disciplines=["industrial", "environmental"], subdisciplines=["Human Factors Engineering", "Ergonomics", "Environmental Impact Assessment"],
+        description="Permissible exposure duration at a sound level with an exchange rate (OSHA: 90 dBA/5 dB, NIOSH: 85 dBA/3 dB) and the dose from an actual exposure.",
+        variables=[V("L", "Sound level (A-weighted)", "dB", signed=True, units=DB), V("Lr", "Criterion level", "dB", latex=r"L_c", default=90, units=DB), V("ER", "Exchange rate", "dB", latex=r"ER", default=5, units=DB), C("t8", "Criterion duration", 8, "h", latex=r"T_c"),
+                   V("tx", "Actual exposure time", "h"), V("Tp", "Permissible duration", "h", latex=r"T"), V("Dz", "Noise dose", "%", latex=r"D")],
+        equations=[("Permissible duration", "Tp = t8/2^((L - Lr)/ER)"), ("Dose", "Dz = tx/Tp")], outputs=["Tp", "Dz"], tags=["hearing conservation", "osha", "niosh", "noise dose", "dba", "twa"], validity=[("Dz < 1", "dose above 100 %: exposure exceeds the permissible limit")],
+        assumptions=["Constant level over the exposure; sum fractions for varying levels"], references=["OSHA 29 CFR 1910.95; NIOSH Pub. 98-126"], example={"L": "92 dB", "Lr": "90 dB", "ER": "5 dB", "tx": "4 h"}),
+    Calculation(
+        id="industrial.finance.npv_payback", name="Net present value and payback of an investment",
+        disciplines=["industrial", "civil", "data"], subdisciplines=["Operations Research", "Business Intelligence"],
+        description="NPV of a constant annual net cash flow, simple payback, and the discounted payback in years.",
+        variables=[V("I0", "Initial investment", "USD", latex=r"I_0"), V("CF", "Annual net cash flow", "USD/yr"), V("r", "Discount rate", "%"), V("n", "Project life (years)", "1"), C("yr1", "One year", 1, "yr", latex=r"1\,\mathrm{yr}"),
+                   V("NPV", "Net present value", "USD", signed=True), V("pb", "Simple payback", "yr"), V("dpb", "Discounted payback (years)", "1", latex=r"n_d")],
+        equations=[("NPV", "NPV = -I0 + CF*yr1*(1 - (1 + r)^(-n))/r"), ("Simple payback", "pb = I0/CF"), ("Discounted payback", "dpb = -log(1 - I0*r/(CF*yr1))/log(1 + r)")], outputs=["NPV", "pb", "dpb"],
+        tags=["npv", "payback", "capital budgeting", "investment", "economics", "roi"], validity=[("CF*yr1*(1 - 1/(1 + r)^n)/r > I0", "NPV is negative at this discount rate and life")], assumptions=["End-of-year flows, constant discount rate"], references=["Blank & Tarquin, Engineering Economy, Ch. 5"],
+        example={"I0": "250000 USD", "CF": "70000 USD/yr", "r": "8 %", "n": "5"}),
+    Calculation(
+        id="industrial.supply_chain.bullwhip_effect", name="Bullwhip effect lower bound",
+        disciplines=["industrial", "systems"], subdisciplines=["Supply Chain Engineering", "Logistics Engineering"],
+        description="Minimum amplification of order variance relative to demand variance when forecasting by a moving average with order-up-to replenishment.",
+        variables=[V("L", "Replenishment lead time (periods)", "1"), V("p", "Moving-average periods", "1"), V("BW", "Variance amplification (≥)", "1")],
+        equations=["BW = 1 + 2*L/p + 2*L^2/p^2"], outputs=["BW"], tags=["bullwhip", "demand amplification", "forecasting", "supply chain", "variance"], assumptions=["Single-stage, order-up-to policy, iid demand"], references=["Chen, Drezner, Ryan & Simchi-Levi (2000), Management Science 46(3)"], example={"L": "3", "p": "5"}),
+]

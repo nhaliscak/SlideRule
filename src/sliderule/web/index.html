@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SlideRule — engineering calculations with worked steps</title>
+  <meta name="description" content="Unit-aware engineering calculations across civil, electrical, mechanical, chemical, petroleum, aerospace, environmental, architectural, industrial and systems engineering, with symbolic and numeric step-by-step solutions.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23c9801a'/%3E%3Cpath d='M5 12h22M5 20h22M11 8v16M21 8v16' stroke='%23fff' stroke-width='2.2' fill='none'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    try { var t = JSON.parse(localStorage.getItem("sliderule.theme")); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+  <a id="skip-link" class="skip-link" href="#main">Skip to the content</a>
+  <h1 class="sr-only">SlideRule: engineering calculations with worked steps</h1>
+  <header class="topbar">
+    <a class="brand" href="#/" aria-label="SlideRule home">
+      <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><rect width="32" height="32" rx="6" fill="var(--accent)"/><path d="M5 12h22M5 20h22M11 8v16M21 8v16" stroke="#fff" stroke-width="2.2" fill="none"/></svg>
+      <span>SlideRule</span>
+    </a>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button role="tab" data-view="calc" aria-selected="true">Calculations</button>
+      <button role="tab" data-view="live" aria-selected="false">LiveCalc</button>
+      <button role="tab" data-view="mine" aria-selected="false">My equations</button>
+      <button role="tab" data-view="convert" aria-selected="false">Unit converter</button>
+      <button role="tab" data-view="about" aria-selected="false">About</button>
+    </nav>
+    <span id="engine-badge" class="badge engine" title="Where the calculations run"></span>
+    <button id="limit-badge" class="badge warn-badge" type="button" hidden title="Calculations are never stopped. Click to change.">⚠ No time limit</button>
+    <button id="settings-btn" class="icon-btn" type="button" aria-label="Settings" title="Settings (time limit for long calculations)">⚙</button>
+    <button id="theme-toggle" class="icon-btn" aria-label="Toggle light/dark theme" title="Toggle theme">◐</button>
+  </header>
+
+  <div id="loading" class="loading" role="status" aria-live="polite">
+    <div class="spinner" aria-hidden="true"></div>
+    <p id="loading-msg">Starting engine…</p>
+  </div>
+
+  <main id="view-calc" class="layout">
+    <aside id="sidebar" class="sidebar" aria-label="Find a calculation"></aside>
+    <aside id="listpane" class="listpane" aria-label="Matching calculations"></aside>
+    <section id="detail" class="detail" aria-live="polite"></section>
+    <section id="design" class="design-host" aria-label="System Design canvas" hidden></section>
+  </main>
+  <main id="view-live" class="page live-page" hidden></main>
+  <main id="view-mine" class="page cust-page" hidden></main>
+  <main id="view-convert" class="page" hidden></main>
+  <main id="view-about" class="page prose" hidden></main>
+
+  <noscript><p style="padding:2rem">SlideRule needs JavaScript to run.</p></noscript>
+  <script src="vendor/katex/katex.min.js"></script>
+  <script src="config.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
