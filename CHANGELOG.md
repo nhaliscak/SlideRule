@@ -6,6 +6,8 @@ versions are not yet released to PyPI. The day-by-day development record, includ
 ## [Unreleased]
 
 ### Added
+* `examples/`: five runnable examples (command line, Python API, HTTP client in Python and curl, a custom equation as JSON, a LiveCalc session), each run against the code and covered by `tests/test_examples.py`.
+* `.github/FUNDING.yml` (a Sponsor button linking to the optional donation page) and a Support section in the README.
 * Property data layer: versioned datapacks with sources, basis and uncertainty; temperature curves that refuse to extrapolate; a **from data…** picker on matching inputs;
   `sliderule data` commands and `/api/data` endpoints.
 * Four shipped datapacks, all not for design: `fluids-water-air`, `fluids-coolprop` (30 fluids computed with CoolProp), `materials-typical` (sources still "citation needed")
@@ -18,6 +20,7 @@ versions are not yet released to PyPI. The day-by-day development record, includ
 * `sliderule app --api`: the desktop app also serves the API to other programs on a known port (default 8765) with a loopback-only Host check, refusal of cross-site web requests, an optional bearer token (`--api-token`) and opt-in CORS (`--api-origin`); see the README.
 
 ### Changed
+* **README rewritten** as a front door: a short pitch, a quick start, nine short capabilities, runnable examples with real output (command line, Python, LiveCalc, property data, a custom equation, HTTP), a table of ways to run it, troubleshooting and a support link. The long feature list and the app walkthrough moved unchanged to `docs/FEATURES.md`; the API and security text moved to `docs/API.md`.
 * `materials-typical` is re-sourced from open references (NASA CR-123772 and CR-123775, NISTIR 7401, NIST cryogenic fits, a state bridge manual), with strengths for 6061-T6 and Ti-6Al-4V (printed minimums as the low end) and a measured steel Poisson's ratio (0.265, from a 1946 National Bureau of Standards paper); no value reads "citation needed" any more.
 * **`sliderule serve` is guarded like the API port**: it answers only to `localhost`, `127.0.0.1` and `[::1]` (against DNS rebinding) and refuses requests that a web page on another site makes (an `Origin` header that is not its own). With `--host 0.0.0.0` the Host rule is dropped, the Origin rule stays, and a warning says it is open to the network.
 * `sliderule app` (native window) works: it waits for its private server before opening, uses a free port, allows downloads (Export, Save case and CSV were silently blocked), and explains a missing GUI toolkit instead of crashing; the `desktop` extra installs the Qt backend on Linux.

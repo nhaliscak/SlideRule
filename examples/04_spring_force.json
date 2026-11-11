@@ -1,0 +1,16 @@
+{
+  "format": "sliderule-calculation", "version": 1,
+  "calculation": {
+    "id": "custom.spring_force", "name": "Spring force", "description": "Hooke's law for a linear spring",
+    "author": "SlideRule examples", "disciplines": ["mechanical"], "subdisciplines": [],
+    "variables": [
+      {"key": "F", "label": "Force",     "unit": "N"},
+      {"key": "k", "label": "Stiffness", "unit": "N/m", "example": "2 kN/m"},
+      {"key": "x", "label": "Extension", "unit": "m",   "example": "5 cm"}
+    ],
+    "equations": [{"title": "Hooke's law", "text": "F = k*x"}],
+    "outputs": ["F"],
+    "assumptions": ["Linear elastic range"], "references": [],
+    "validity": [{"condition": "x > 0", "message": "Extension should be positive"}]
+  }
+}
