@@ -20,7 +20,7 @@ classifiers = [
   "Topic :: Scientific/Engineering",
 ]
 requires-python = ">=3.12"
-dependencies = ["sympy>=1.12", "numpy>=1.26", "scipy>=1.11"]
+dependencies = ["sympy>=1.12", "numpy>=1.26", "scipy>=1.18.1"]
 keywords = ["engineering", "units", "calculator", "dimensional analysis"]
 
 [project.urls]
