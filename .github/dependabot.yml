@@ -4,6 +4,9 @@ updates:
     directory: "/"
     schedule: { interval: weekly }
     open-pull-requests-limit: 5
+    # Do not raise the minimum versions in pyproject.toml just because a newer release exists: that would exclude users
+    # with older packages for no benefit. Raise a minimum only when a new release falls outside the current range.
+    versioning-strategy: increase-if-necessary
   - package-ecosystem: github-actions
     directory: "/"
     schedule: { interval: weekly }
